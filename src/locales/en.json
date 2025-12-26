@@ -9,6 +9,16 @@
     "restart_update": "Restart & Update",
     "later": "Later"
   },
+  "update_dialog": {
+    "title": "New Version Found",
+    "description": "Version {{version}} is available",
+    "whats_new": "What's New",
+    "downloading": "Downloading update...",
+    "restart_warning": "App will restart automatically after download",
+    "later": "Remind Me Later",
+    "updating": "Updating...",
+    "install": "Update Now"
+  },
   "settings": {
     "title": "Settings",
     "description": "Configure application settings.",

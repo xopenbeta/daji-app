@@ -1,7 +1,7 @@
 {
   "name": "daji",
   "private": true,
-  "version": "0.0.8",
+  "version": "0.0.9",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -47,6 +47,8 @@
     "@tauri-apps/api": "^2.8.5",
     "@tauri-apps/plugin-log": "^2.7.0",
     "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-process": "^2.3.1",
+    "@tauri-apps/plugin-updater": "^2.9.0",
     "@types/uuid": "^11.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",

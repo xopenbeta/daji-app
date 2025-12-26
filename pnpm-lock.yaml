@@ -36,6 +36,8 @@ specifiers:
   '@tauri-apps/cli': ^2
   '@tauri-apps/plugin-log': ^2.7.0
   '@tauri-apps/plugin-opener': ^2
+  '@tauri-apps/plugin-process': ^2.3.1
+  '@tauri-apps/plugin-updater': ^2.9.0
   '@types/js-yaml': ^4.0.9
   '@types/lodash': ^4.17.10
   '@types/react': ^18.3.1
@@ -110,6 +112,8 @@ dependencies:
   '@tauri-apps/api': 2.9.1
   '@tauri-apps/plugin-log': 2.7.1
   '@tauri-apps/plugin-opener': 2.5.2
+  '@tauri-apps/plugin-process': 2.3.1
+  '@tauri-apps/plugin-updater': 2.9.0
   '@types/uuid': 11.0.0
   class-variance-authority: 0.7.1
   clsx: 2.1.1
@@ -2251,6 +2255,18 @@ packages:
 
   /@tauri-apps/plugin-opener/2.5.2:
     resolution: {integrity: sha512-ei/yRRoCklWHImwpCcDK3VhNXx+QXM9793aQ64YxpqVF0BDuuIlXhZgiAkc15wnPVav+IbkYhmDJIv5R326Mew==}
+    dependencies:
+      '@tauri-apps/api': 2.9.1
+    dev: false
+
+  /@tauri-apps/plugin-process/2.3.1:
+    resolution: {integrity: sha512-nCa4fGVaDL/B9ai03VyPOjfAHRHSBz5v6F/ObsB73r/dA3MHHhZtldaDMIc0V/pnUw9ehzr2iEG+XkSEyC0JJA==}
+    dependencies:
+      '@tauri-apps/api': 2.9.1
+    dev: false
+
+  /@tauri-apps/plugin-updater/2.9.0:
+    resolution: {integrity: sha512-j++sgY8XpeDvzImTrzWA08OqqGqgkNyxczLD7FjNJJx/uXxMZFz5nDcfkyoI/rCjYuj2101Tci/r/HFmOmoxCg==}
     dependencies:
       '@tauri-apps/api': 2.9.1
     dev: false

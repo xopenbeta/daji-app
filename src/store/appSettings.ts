@@ -16,3 +16,4 @@ export const defaultAppSettings: AppSettings = {
 
 export const appSettingsAtom = atom<AppSettings | undefined>(undefined)
 export const isAppLoadingAtom = atom(true)
+export const updateAvailableAtom = atom(false)
