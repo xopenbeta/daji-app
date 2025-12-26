@@ -53,6 +53,16 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install
 
+      - name: Extract Release Notes
+        id: release_notes
+        shell: bash
+        run: |
+          NOTES=$(node scripts/extract-changelog.js)
+          delimiter="EOF_$(date +%s%N)"
+          echo "NOTES<<${delimiter}" >> "$GITHUB_OUTPUT"
+          echo "${NOTES}" >> "$GITHUB_OUTPUT"
+          echo "${delimiter}" >> "$GITHUB_OUTPUT"
+
       - name: Add Rust targets for macOS
         if: matrix.platform == 'macos-latest'
         run: rustup target add x86_64-apple-darwin aarch64-apple-darwin
@@ -64,9 +74,9 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces __VERSION__ with the app version
-          releaseName: 'App v__VERSION__'
-          body: 'See the assets to download this version and install.'
-          draft: false
+          tagName: v__VERSION__ # the action automatically replaces __VERSION__ with the app version
+          releaseName: 'Envis v__VERSION__'
+          releaseBody: ${{ steps.release_notes.outputs.NOTES }}
+          releaseDraft: false
           prerelease: false
           args: ${{ matrix.platform == 'macos-latest' && '--target universal-apple-darwin' || '' }}
