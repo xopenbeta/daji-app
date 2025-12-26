@@ -1042,7 +1042,7 @@ dependencies = [
 
 [[package]]
 name = "daji"
-version = "0.0.5"
+version = "0.0.6"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -1052,7 +1052,6 @@ dependencies = [
  "futures-util",
  "image",
  "log",
- "netstat2",
  "num_cpus",
  "rand 0.8.5",
  "reqwest 0.11.27",
@@ -2966,20 +2965,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "netstat2"
-version = "0.9.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0faa3f4ad230fd2bf2a5dad71476ecbaeaed904b3c7e7e5b1f266c415c03761f"
-dependencies = [
- "bitflags 1.3.2",
- "byteorder",
- "libc",
- "num-derive 0.3.3",
- "num-traits",
- "thiserror 1.0.69",
-]
-
-[[package]]
 name = "new_debug_unreachable"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3043,17 +3028,6 @@ name = "num-conv"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "51d515d32fb182ee37cda2ccdcb92950d6a3c2893aa280e540671c2cd0f3b1d9"
-
-[[package]]
-name = "num-derive"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "876a53fff98e03a936a674b29568b0e605f06b29372c2489ff4de23f1949743d"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 1.0.109",
-]
 
 [[package]]
 name = "num-derive"
@@ -4127,7 +4101,7 @@ dependencies = [
  "maybe-rayon",
  "new_debug_unreachable",
  "noop_proc_macro",
- "num-derive 0.4.2",
+ "num-derive",
  "num-traits",
  "paste",
  "profiling",
