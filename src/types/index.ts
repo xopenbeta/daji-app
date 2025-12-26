@@ -1,6 +1,6 @@
 export type AppTheme = 'light' | 'dark' | 'system';
 
-export type AIProvider = 'openai' | 'deepseek';
+export type AIProvider = 'openai' | 'deepseek' | 'qwen';
 
 export type AISettings = {
   enabled: boolean;

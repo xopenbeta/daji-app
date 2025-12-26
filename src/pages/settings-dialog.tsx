@@ -259,6 +259,9 @@ export default function SettingsDialog(props: {
                   } else if (value === 'deepseek') {
                     setNewAIBaseUrl('https://api.deepseek.com/v1')
                     setNewAIModel('deepseek-chat')
+                  } else if (value === 'qwen') {
+                    setNewAIBaseUrl('https://dashscope.aliyuncs.com/compatible-mode/v1')
+                    setNewAIModel('qwen-plus')
                   }
                 }}>
                   <SelectTrigger className="bg-content2 border-divider focus:border-primary heroui-transition shadow-none">
@@ -275,6 +278,12 @@ export default function SettingsDialog(props: {
                       <div className="flex items-center">
                         <Bot className="mr-2 h-4 w-4" />
                         DeepSeek
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="qwen" className="heroui-transition hover:bg-content2">
+                      <div className="flex items-center">
+                        <Bot className="mr-2 h-4 w-4" />
+                        阿里千问
                       </div>
                     </SelectItem>
                   </SelectContent>
@@ -306,6 +315,97 @@ export default function SettingsDialog(props: {
 
               <div className="space-y-2">
                 <Label htmlFor="ai-model" className="text-sm font-medium text-foreground">{t('settings.model')}</Label>
+                <div className="flex flex-wrap gap-1.5 mb-2">
+                  {newAIProvider === 'openai' && (
+                    <>
+                      <Badge 
+                        variant={newAIModel === 'gpt-3.5-turbo' ? 'default' : 'outline'} 
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setNewAIModel('gpt-3.5-turbo')}
+                      >
+                        gpt-3.5-turbo
+                      </Badge>
+                      <Badge 
+                        variant={newAIModel === 'gpt-4' ? 'default' : 'outline'} 
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setNewAIModel('gpt-4')}
+                      >
+                        gpt-4
+                      </Badge>
+                      <Badge 
+                        variant={newAIModel === 'gpt-4-turbo' ? 'default' : 'outline'} 
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setNewAIModel('gpt-4-turbo')}
+                      >
+                        gpt-4-turbo
+                      </Badge>
+                      <Badge 
+                        variant={newAIModel === 'gpt-4o' ? 'default' : 'outline'} 
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setNewAIModel('gpt-4o')}
+                      >
+                        gpt-4o
+                      </Badge>
+                    </>
+                  )}
+                  {newAIProvider === 'deepseek' && (
+                    <>
+                      <Badge 
+                        variant={newAIModel === 'deepseek-chat' ? 'default' : 'outline'} 
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setNewAIModel('deepseek-chat')}
+                      >
+                        deepseek-chat
+                      </Badge>
+                      <Badge 
+                        variant={newAIModel === 'deepseek-coder' ? 'default' : 'outline'} 
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setNewAIModel('deepseek-coder')}
+                      >
+                        deepseek-coder
+                      </Badge>
+                      <Badge 
+                        variant={newAIModel === 'deepseek-reasoner' ? 'default' : 'outline'} 
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setNewAIModel('deepseek-reasoner')}
+                      >
+                        deepseek-reasoner
+                      </Badge>
+                    </>
+                  )}
+                  {newAIProvider === 'qwen' && (
+                    <>
+                      <Badge 
+                        variant={newAIModel === 'qwen-plus' ? 'default' : 'outline'} 
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setNewAIModel('qwen-plus')}
+                      >
+                        qwen-plus
+                      </Badge>
+                      <Badge 
+                        variant={newAIModel === 'qwen-turbo' ? 'default' : 'outline'} 
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setNewAIModel('qwen-turbo')}
+                      >
+                        qwen-turbo
+                      </Badge>
+                      <Badge 
+                        variant={newAIModel === 'qwen-max' ? 'default' : 'outline'} 
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setNewAIModel('qwen-max')}
+                      >
+                        qwen-max
+                      </Badge>
+                      <Badge 
+                        variant={newAIModel === 'qwen-coder-plus' ? 'default' : 'outline'} 
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setNewAIModel('qwen-coder-plus')}
+                      >
+                        qwen-coder-plus
+                      </Badge>
+                    </>
+                  )}
+                </div>
                 <Input
                   id="ai-model"
                   value={newAIModel}
@@ -328,6 +428,14 @@ export default function SettingsDialog(props: {
                   <p className="font-medium mb-1">{t('settings.deepseek_desc_title')}</p>
                   <p>{t('settings.deepseek_desc_model')}</p>
                   <p>{t('settings.deepseek_desc_key')}</p>
+                </div>
+              )}
+
+              {newAIProvider === 'qwen' && (
+                <div className="text-xs text-muted-foreground bg-content2 p-3 rounded-lg">
+                  <p className="font-medium mb-1">{t('settings.qwen_desc_title')}</p>
+                  <p>{t('settings.qwen_desc_model')}</p>
+                  <p>{t('settings.qwen_desc_key')}</p>
                 </div>
               )}
             </div>
