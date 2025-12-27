@@ -12,6 +12,8 @@
     "opener:default",
     "core:webview:allow-internal-toggle-devtools",
     "log:default",
-    "cli:default"
+    "cli:default",
+    "updater:default",
+    "process:default"
   ]
 }
