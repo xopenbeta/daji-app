@@ -46,7 +46,7 @@ export default function SettingsDialog(props: {
 
   useEffect(() => {
     if (isSettingDialogOpen && appSettings) {
-      setNewAIEnabled(appSettings.ai?.enabled ?? false)
+      setNewAIEnabled(appSettings.ai?.enabled ?? true)
       setNewAIProvider(appSettings.ai?.provider ?? 'openai')
       setNewAIApiKey(appSettings.ai?.apiKey ?? '')
       setNewAIBaseUrl(appSettings.ai?.baseUrl ?? 'https://api.openai.com/v1')

@@ -6,7 +6,7 @@ export const defaultAppSettings: AppSettings = {
   theme: 'system',
   language: 'zh',
   ai: {
-    enabled: false,
+    enabled: true,
     provider: 'openai',
     apiKey: '',
     baseUrl: 'https://api.openai.com/v1',
