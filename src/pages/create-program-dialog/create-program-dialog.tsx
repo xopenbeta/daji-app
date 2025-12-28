@@ -36,7 +36,8 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram }: Crea
     const [, setPrograms] = useAtom(programsAtom);
 
     const [inputValue, setInputValue] = useState('');
-    const [isComposing, setIsComposing] = useState(false);
+    const isComposingRef = useRef(false);
+    const lastCompositionEndRef = useRef(0); // 中文输入法下确认输入（按回车）时，浏览器会先结束输入法状态，然后再派发一个回车键事件。
     const [generatedCode, setGeneratedCode] = useState<string>('');
     const [programName, setProgramName] = useState(t('program.unnamed'));
     const [isEditingName, setIsEditingName] = useState(false);
@@ -325,11 +326,19 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram }: Crea
                                         <Textarea
                                             value={inputValue}
                                             onChange={(e) => setInputValue(e.target.value)}
-                                            onCompositionStart={() => setIsComposing(true)}
-                                            onCompositionEnd={() => setIsComposing(false)}
+                                            onCompositionStart={() => { 
+                                                isComposingRef.current = true; 
+                                            }}
+                                            onCompositionEnd={() => { 
+                                                isComposingRef.current = false; 
+                                                lastCompositionEndRef.current = Date.now();
+                                            }}
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Enter' && !e.shiftKey) {
-                                                    if (isComposing) return;
+                                                    if (isComposingRef.current || e.nativeEvent.isComposing) return;
+                                                    // 通过延时实现状态的有效判断，这里状态改变比较奇怪
+                                                    if (Date.now() - lastCompositionEndRef.current < 100) return;
+
                                                     e.preventDefault();
                                                     handleSendMessageStreaming();
                                                 }
