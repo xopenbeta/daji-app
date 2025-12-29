@@ -47,7 +47,7 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
 
     const abortControllerRef = useRef<AbortController | null>(null);
 
-    const { scrollAreaRef, resetUserHasScrolled } = useScrollHooks(chatMessages);
+    const { scrollAreaRef, resetIsAutoScroll } = useScrollHooks(chatMessages);
 
     // Reset or load initial state when dialog opens
     useEffect(() => {
@@ -85,7 +85,7 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
         if (typeof overrideContent !== 'string') {
             setInputValue('');
         }
-        resetUserHasScrolled();
+        resetIsAutoScroll();
 
         setChatMessages(prev => [...prev, {
             id: Date.now().toString(),

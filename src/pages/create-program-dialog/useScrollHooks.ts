@@ -2,22 +2,23 @@ import { useRef, useCallback, useEffect, useLayoutEffect } from 'react';
 
 export function useScrollHooks(dependency: any) {
     const scrollAreaRef = useRef<HTMLDivElement>(null);
-    const scrollViewportRef = useRef<HTMLDivElement | null>(null);
-    const userHasScrolledRef = useRef(false);
+    const isAutoScrollRef = useRef(true);
     const lastScrollTop = useRef(0);
 
     // Auto scroll logic
     const scrollToBottom = useCallback(() => {
-        const viewport = scrollViewportRef.current;
-        if (viewport && !userHasScrolledRef.current) {
+        if (!scrollAreaRef.current) return;
+        const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLDivElement;
+        if (viewport && isAutoScrollRef.current) {
             viewport.scrollTop = viewport.scrollHeight;
         }
     }, []);
 
-    // 默认会自动向下滚动，但一旦用户手动滚动过，就不再自动滚动
+    // 默认会自动向下滚动，当出现向上滚动时停止自动滚动
     // 如果用户滚动到底部，则恢复自动滚动
     const handleScroll = useCallback(() => {
-        const viewport = scrollViewportRef.current;
+        if (!scrollAreaRef.current) return;
+        const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLDivElement;
         if (viewport) {
             const { scrollTop, scrollHeight, clientHeight } = viewport;
             // 距离底部小于25px就认为在底部
@@ -25,10 +26,12 @@ export function useScrollHooks(dependency: any) {
 
             if (isAtBottom) {
                 // 用户滚动到底部，恢复自动滚动
-                userHasScrolledRef.current = false;
-            } else {
-                // 用户滚动到非底部位置，停止自动滚动
-                userHasScrolledRef.current = true;
+                isAutoScrollRef.current = true;
+                console.log('恢复自动滚动');
+            } else if (scrollTop < lastScrollTop.current) {
+                // 向上滚动时，停止自动滚动
+                isAutoScrollRef.current = false;
+                console.log('停止自动滚动');
             }
             lastScrollTop.current = scrollTop;
         }
@@ -38,8 +41,6 @@ export function useScrollHooks(dependency: any) {
         if (!scrollAreaRef.current) return;
         const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLDivElement;
         if (!viewport) return;
-
-        scrollViewportRef.current = viewport;
         viewport.addEventListener('scroll', handleScroll);
         return () => viewport.removeEventListener('scroll', handleScroll);
     }, []);
@@ -53,13 +54,13 @@ export function useScrollHooks(dependency: any) {
         return () => cancelAnimationFrame(rafId);
     }, [dependency, scrollToBottom]);
 
-    const resetUserHasScrolled = useCallback(() => {
-        userHasScrolledRef.current = false;
+    const resetIsAutoScroll = useCallback(() => {
+        isAutoScrollRef.current = true;
     }, []);
 
     return {
         scrollAreaRef,
         scrollToBottom,
-        resetUserHasScrolled
+        resetIsAutoScroll
     };
 }
