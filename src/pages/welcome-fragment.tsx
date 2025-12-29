@@ -26,13 +26,11 @@ import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart } from "@/components/ui/pie-chart";
 import { Progress } from "@/components/ui/progress";
-import { SystemMonitor, useSystemMonitorData } from '@/components/system-monitor';
 import { useTranslation } from "react-i18next";
 
 export function WelcomeFragment({ onOpen }: {
     onOpen?: () => void;
 }) {
-    const systemInfo = useSystemMonitorData()
     const [selectedEnvId, setSelectedEnvId] = useState<string | null>(null);
     const { t } = useTranslation();
 
