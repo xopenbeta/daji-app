@@ -1,6 +1,6 @@
 import { useRef, useCallback, useEffect, useLayoutEffect } from 'react';
 
-export function useScrollHooks(dependency: any) {
+export function useScrollHooks(dependency: any, open: boolean) {
     const scrollAreaRef = useRef<HTMLDivElement>(null);
     const isAutoScrollRef = useRef(true);
     const lastScrollTop = useRef(0);
@@ -38,12 +38,32 @@ export function useScrollHooks(dependency: any) {
     }, []);
 
     useEffect(() => {
-        if (!scrollAreaRef.current) return;
-        const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLDivElement;
-        if (!viewport) return;
-        viewport.addEventListener('scroll', handleScroll);
-        return () => viewport.removeEventListener('scroll', handleScroll);
-    }, []);
+        if (!open) return;
+
+        // 使用 setTimeout 延迟，确保 Dialog 动画完成后 DOM 已经渲染
+        const timer = setTimeout(() => {
+            if (!scrollAreaRef.current) {
+                console.warn('scrollAreaRef.current is null');
+                return;
+            }
+            const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLDivElement;
+            if (!viewport) {
+                console.warn('viewport not found');
+                return;
+            }
+            viewport.addEventListener('scroll', handleScroll);
+        }, 100); // 延迟 100ms，等待 Dialog 动画完成
+
+        return () => {
+            clearTimeout(timer);
+            if (scrollAreaRef.current) {
+                const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLDivElement;
+                if (viewport) {
+                    viewport.removeEventListener('scroll', handleScroll);
+                }
+            }
+        };
+    }, [open, handleScroll]);
 
     // 默认自动滚动 - 使用 useLayoutEffect 确保在 DOM 更新后立即执行
     useLayoutEffect(() => {
