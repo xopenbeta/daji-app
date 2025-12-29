@@ -76,8 +76,6 @@ pub fn run() {
             open_files_dialog,
             open_folder_dialog,
             open_in_file_manager,
-            // 系统信息相关命令
-            get_system_info,
             toggle_dev_tools,
             quit_app,
         ])

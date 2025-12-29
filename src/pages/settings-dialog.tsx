@@ -28,7 +28,7 @@ export default function SettingsDialog(props: {
 
   const [appSettings] = useAtom(appSettingsAtom)
   const { updateAppSettings } = useAppSettings()
-  const { toggleDevTools, quitApp, getSystemInfo } = useSystemInfo()
+  const { toggleDevTools, quitApp } = useSystemInfo()
   const { openFolderInFinder, selectFolder } = useFileOperations()
   const { t } = useTranslation()
   const currentTheme = appSettings?.theme as AppTheme

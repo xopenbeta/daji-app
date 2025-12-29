@@ -2,22 +2,6 @@ use anyhow::Result;
 use serde_json::Value;
 use tauri::{AppHandle, Manager};
 
-use crate::manager::system_info_manager::SystemInfoManager;
-
-/// 获取系统信息
-#[tauri::command]
-pub async fn get_system_info() -> Result<Value, String> {
-    let manager = SystemInfoManager::global();
-
-    match manager.get_system_info() {
-        Ok(result) => Ok(serde_json::to_value(result).map_err(|e| e.to_string())?),
-        Err(e) => Ok(serde_json::json!({
-            "success": false,
-            "message": e.to_string()
-        })),
-    }
-}
-
 /// 切换开发者工具
 #[tauri::command]
 pub async fn toggle_dev_tools(app_handle: AppHandle) -> Result<Value, String> {
