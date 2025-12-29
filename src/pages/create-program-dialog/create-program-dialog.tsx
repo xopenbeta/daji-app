@@ -82,6 +82,12 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
             return;
         }
 
+        // 如果是第一句对话且是创建全新程序，将第一句话作为 programName
+        const isFirstUserMessage = chatMessages.filter(m => m.role === 'user').length === 0;
+        if (isFirstUserMessage && !initialProgram) {
+            setProgramName(contentToSend);
+        }
+
         if (typeof overrideContent !== 'string') {
             setInputValue('');
         }
