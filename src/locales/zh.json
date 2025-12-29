@@ -104,9 +104,9 @@
     "step2_desc": "用AI开发",
     "step3": "运行",
     "step3_desc": "一键启动",
-    "placeholder_url_encoder": "生成 URL 编码解码器",
-    "placeholder_calculator": "生成计算器",
-    "placeholder_qrcode": "生成二维码生成器",
+    "placeholder_url_encoder": "URL编码解码器",
+    "placeholder_calculator": "计算器",
+    "placeholder_qrcode": "二维码生成器",
     "placeholder_more": "生成更多..."
   },
   "program": {

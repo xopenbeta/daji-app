@@ -61,7 +61,7 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
             } else {
                 addChatMessage({ role: 'assistant', content: t('program.ai_hello') });
                 setGeneratedCode('');
-                setProgramName(t('program.unnamed'));
+                setProgramName(initialPrompt || t('program.unnamed'));
 
                 if (initialPrompt) {
                     handleSendMessageStreaming(initialPrompt);

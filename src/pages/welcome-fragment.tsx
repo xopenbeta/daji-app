@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useAtom } from "jotai";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createProgramDialogStateAtom } from "@/store";
 import { Github, Server, Code, Database, Settings, PanelLeft, Bot, Zap, Globe, Box, Layers, Terminal, Command, Cpu, Plus, FolderOpen, Book, Clock, ArrowRight, Search, GripVertical, Play, Square, Hexagon, Info, MemoryStick, HardDrive, Wifi } from "lucide-react";
 import {
@@ -38,6 +39,7 @@ export function WelcomeFragment({ onOpen }: {
     const [, setCreateProgramDialogState] = useAtom(createProgramDialogStateAtom);
     const [inputValue, setInputValue] = useState("");
     const [placeholderIndex, setPlaceholderIndex] = useState(0);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
     
     const placeholders = [
         t('welcome.placeholder_url_encoder'),
@@ -51,6 +53,16 @@ export function WelcomeFragment({ onOpen }: {
         }, 3000);
         return () => clearInterval(interval);
     }, [placeholders.length]);
+
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = '72px';
+            const scrollHeight = textareaRef.current.scrollHeight;
+            if (scrollHeight > 72) {
+                textareaRef.current.style.height = `${scrollHeight}px`;
+            }
+        }
+    }, [inputValue]);
 
     const handleSubmit = () => {
         setCreateProgramDialogState({
@@ -86,18 +98,25 @@ export function WelcomeFragment({ onOpen }: {
 
                     {/* Input Section */}
                     <div className="w-full max-w-lg mx-auto relative">
-                        <div className="relative flex items-center w-full">
-                            <Search className="absolute left-4 w-5 h-5 text-muted-foreground pointer-events-none" />
-                            <Input 
-                                className="w-full h-12 pl-12 pr-12 text-base rounded-full shadow-sm border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-sm transition-all focus:shadow-md focus:ring-2 focus:ring-primary/20"
+                        <div className="relative flex w-full">
+                            <Search className="absolute left-4 top-3.5 w-5 h-5 text-muted-foreground pointer-events-none" />
+                            <Textarea 
+                                ref={textareaRef}
+                                className="w-full min-h-[72px] pl-12 pr-12 py-3 text-base rounded-2xl shadow-sm border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-sm transition-all focus:shadow-md focus:ring-2 focus:ring-primary/20 resize-none overflow-hidden"
                                 placeholder={placeholders[placeholderIndex]}
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                        e.preventDefault();
+                                        handleSubmit();
+                                    }
+                                }}
+                                rows={2}
                             />
                             <Button 
                                 size="icon" 
-                                className="absolute right-1.5 h-9 w-9 rounded-full"
+                                className="absolute right-1.5 bottom-1.5 h-9 w-9 rounded-full"
                                 onClick={handleSubmit}
                             >
                                 <ArrowRight className="w-4 h-4" />
