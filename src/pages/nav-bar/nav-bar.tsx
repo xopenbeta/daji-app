@@ -54,7 +54,7 @@ import { useAppSettings } from '@/hooks/appSettings'
 import { appSettingsAtom, isAppLoadingAtom } from '../../store/appSettings'
 import { SortableProgramItem } from './nav-bar-item'
 import SettingsDialog from '../settings-dialog'
-import { nowProgramIdAtom, programsAtom } from '@/store'
+import { nowProgramIdAtom, programsAtom, createProgramDialogStateAtom } from '@/store'
 import { isLogPanelOpenAtom } from '@/store/log'
 import { getAllPrograms, deleteProgram } from '@/lib/db'
 import { CreateProgramDialog } from '../create-program-dialog/create-program-dialog'
@@ -73,9 +73,8 @@ export default function NavBar({ onClose }: NavBarProps) {
   const [programs, setPrograms] = useAtom(programsAtom)
   const [nowProgramId, setNowProgramId] = useAtom(nowProgramIdAtom)
   const [, setIsLogPanelOpen] = useAtom(isLogPanelOpenAtom)
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
+  const [createProgramDialogState, setCreateProgramDialogState] = useAtom(createProgramDialogStateAtom)
   const [isSettingDialogOpen, setIsSettingDialogOpen] = useState(false)
-  const [editingProgram, setEditingProgram] = useState<Program | undefined>(undefined)
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
@@ -103,14 +102,19 @@ export default function NavBar({ onClose }: NavBarProps) {
   }
 
   const handleEditProgram = (program: Program) => {
-    setEditingProgram(program)
-    setIsCreateDialogOpen(true)
+    setCreateProgramDialogState({
+      isOpen: true,
+      initialPrompt: undefined,
+      initialProgram: program
+    })
   }
 
   const handleCreateProgram = () => {
-    setEditingProgram(undefined)
-
-    setIsCreateDialogOpen(true)
+    setCreateProgramDialogState({
+      isOpen: true,
+      initialPrompt: undefined,
+      initialProgram: undefined
+    })
   }
 
   const handleDeleteProgram = async (id: string) => {
@@ -227,9 +231,10 @@ export default function NavBar({ onClose }: NavBarProps) {
       </div>
 
       <CreateProgramDialog 
-        open={isCreateDialogOpen} 
-        onOpenChange={setIsCreateDialogOpen}
-        initialProgram={editingProgram}
+        open={createProgramDialogState.isOpen} 
+        onOpenChange={(open) => setCreateProgramDialogState(prev => ({ ...prev, isOpen: open }))}
+        initialProgram={createProgramDialogState.initialProgram}
+        initialPrompt={createProgramDialogState.initialPrompt}
       />
 
       <SettingsDialog 

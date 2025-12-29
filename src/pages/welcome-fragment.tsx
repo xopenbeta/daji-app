@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createProgramDialogStateAtom } from "@/store";
 import { Github, Server, Code, Database, Settings, PanelLeft, Bot, Zap, Globe, Box, Layers, Terminal, Command, Cpu, Plus, FolderOpen, Book, Clock, ArrowRight, Search, GripVertical, Play, Square, Hexagon, Info, MemoryStick, HardDrive, Wifi } from "lucide-react";
 import {
   DndContext,
@@ -33,6 +35,32 @@ export function WelcomeFragment({ onOpen }: {
     const [selectedEnvId, setSelectedEnvId] = useState<string | null>(null);
     const { t } = useTranslation();
 
+    const [, setCreateProgramDialogState] = useAtom(createProgramDialogStateAtom);
+    const [inputValue, setInputValue] = useState("");
+    const [placeholderIndex, setPlaceholderIndex] = useState(0);
+    
+    const placeholders = [
+        t('welcome.placeholder_url_encoder'),
+        t('welcome.placeholder_calculator'),
+        t('welcome.placeholder_qrcode'),
+    ];
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, [placeholders.length]);
+
+    const handleSubmit = () => {
+        setCreateProgramDialogState({
+            isOpen: true,
+            initialPrompt: inputValue || placeholders[placeholderIndex],
+            initialProgram: undefined
+        });
+        setInputValue("");
+    };
+
     return (
         <div className="relative w-full h-full bg-white dark:bg-[#030303] text-gray-900 dark:text-white overflow-hidden flex flex-col font-sans selection:bg-blue-500/20 dark:selection:bg-white/20">
             {/* Cursor-style Background */}
@@ -53,6 +81,27 @@ export function WelcomeFragment({ onOpen }: {
                         <div>
                             <h1 className="text-3xl font-medium tracking-tight text-gray-900 dark:text-white mb-2">{t('app.title')}</h1>
                             <p className="text-gray-500 dark:text-gray-400 text-sm">{t('app.description')}</p>
+                        </div>
+                    </div>
+
+                    {/* Input Section */}
+                    <div className="w-full max-w-lg mx-auto relative">
+                        <div className="relative flex items-center w-full">
+                            <Search className="absolute left-4 w-5 h-5 text-muted-foreground pointer-events-none" />
+                            <Input 
+                                className="w-full h-12 pl-12 pr-12 text-base rounded-full shadow-sm border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-sm transition-all focus:shadow-md focus:ring-2 focus:ring-primary/20"
+                                placeholder={placeholders[placeholderIndex]}
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+                            />
+                            <Button 
+                                size="icon" 
+                                className="absolute right-1.5 h-9 w-9 rounded-full"
+                                onClick={handleSubmit}
+                            >
+                                <ArrowRight className="w-4 h-4" />
+                            </Button>
                         </div>
                     </div>
 

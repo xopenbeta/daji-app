@@ -7,4 +7,12 @@ export const nowProgramIdAtom = atom('');
 export const programsAtom = atom<Program[]>([]);
 export const isProgramLoadingAtom = atom(false);
 
+export const createProgramDialogStateAtom = atom<{
+    isOpen: boolean;
+    initialPrompt?: string;
+    initialProgram?: Program;
+}>({
+    isOpen: false,
+});
+
 

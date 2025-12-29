@@ -103,7 +103,11 @@
     "step2": "Develop",
     "step2_desc": "Develop with AI",
     "step3": "Run",
-    "step3_desc": "One-Click Start"
+    "step3_desc": "One-Click Start",
+    "placeholder_url_encoder": "Generate URL Encoder/Decoder",
+    "placeholder_calculator": "Generate Calculator",
+    "placeholder_qrcode": "Generate QR Code Generator",
+    "placeholder_more": "Generate more..."
   },
   "program": {
     "create_new": "Create New Program",

@@ -24,9 +24,10 @@ interface CreateProgramDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     initialProgram?: Program;
+    initialPrompt?: string;
 }
 
-export function CreateProgramDialog({ open, onOpenChange, initialProgram }: CreateProgramDialogProps) {
+export function CreateProgramDialog({ open, onOpenChange, initialProgram, initialPrompt }: CreateProgramDialogProps) {
     const { t } = useTranslation();
     const [appSettings] = useAtom(appSettingsAtom);
     const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom);
@@ -61,12 +62,16 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram }: Crea
                 addChatMessage({ role: 'assistant', content: t('program.ai_hello') });
                 setGeneratedCode('');
                 setProgramName(t('program.unnamed'));
+
+                if (initialPrompt) {
+                    handleSendMessageStreaming(initialPrompt);
+                }
             }
             setInputValue('');
             setIsLoading(false);
             setActiveTab('preview');
         }
-    }, [open, initialProgram]);
+    }, [open, initialProgram, initialPrompt]);
 
     const handleSendMessageStreaming = async (overrideContent?: string | any) => {
         const contentToSend = typeof overrideContent === 'string' ? overrideContent : inputValue.trim();
