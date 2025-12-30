@@ -273,6 +273,70 @@ impl FileManager {
         }
         Ok(())
     }
+
+    /// 保存文件对话框
+    pub async fn save_file_dialog(
+        app_handle: &AppHandle,
+        title: Option<&str>,
+        filters: Option<Vec<(&str, &[&str])>>,
+        default_path: Option<PathBuf>,
+        default_name: Option<&str>,
+    ) -> Result<Option<PathBuf>> {
+        use tauri_plugin_dialog::DialogExt;
+        use tokio::sync::oneshot;
+
+        let mut dialog = app_handle.dialog().file();
+
+        // 设置标题
+        if let Some(title) = title {
+            dialog = dialog.set_title(title);
+        }
+
+        // 设置文件过滤器
+        if let Some(filters) = filters {
+            for (name, extensions) in filters {
+                dialog = dialog.add_filter(name, extensions);
+            }
+        }
+
+        // 设置默认路径
+        if let Some(default_path) = default_path {
+            dialog = dialog.set_directory(default_path);
+        }
+
+        // 设置默认文件名
+        if let Some(default_name) = default_name {
+            dialog = dialog.set_file_name(default_name);
+        }
+
+        let (tx, rx) = oneshot::channel();
+        dialog.save_file(move |file_path| {
+            let _ = tx.send(file_path);
+        });
+
+        let file_path = rx
+            .await
+            .map_err(|_| anyhow::anyhow!("Failed to receive file path"))?;
+        Ok(file_path.and_then(|f| f.as_path().map(|p| p.to_owned())))
+    }
+
+    /// 读取文件内容
+    pub fn read_file<P: AsRef<std::path::Path>>(path: P) -> Result<String> {
+        let path = path.as_ref();
+        std::fs::read_to_string(path).context(format!("读取文件失败: {}", path.display()))
+    }
+
+    /// 写入文件内容
+    pub fn write_file<P: AsRef<std::path::Path>>(path: P, content: &str) -> Result<()> {
+        let path = path.as_ref();
+        
+        // 确保父目录存在
+        if let Some(parent) = path.parent() {
+            Self::create_dir_if_not_exists(parent)?;
+        }
+        
+        std::fs::write(path, content).context(format!("写入文件失败: {}", path.display()))
+    }
 }
 
 /// 路径信息结构

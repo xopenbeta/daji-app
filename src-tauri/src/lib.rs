@@ -76,6 +76,9 @@ pub fn run() {
             open_files_dialog,
             open_folder_dialog,
             open_in_file_manager,
+            save_file_dialog,
+            read_file_content,
+            write_file_content,
             toggle_dev_tools,
             quit_app,
         ])

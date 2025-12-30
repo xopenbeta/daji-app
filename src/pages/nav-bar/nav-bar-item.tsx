@@ -22,8 +22,11 @@ import {
   Square,
   Trash,
   FileText,
+  Download,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { useFileOperations } from '@/hooks/file-operations'
+import { toast } from 'sonner'
 
 interface SortableProgramItemProps {
   program: Program;
@@ -47,6 +50,7 @@ export function SortableProgramItem({
   onViewLog
 }: SortableProgramItemProps) {
   const { t } = useTranslation()
+  const { saveFileDialog, writeFileContent } = useFileOperations();
   const {
     attributes,
     listeners,
@@ -63,6 +67,28 @@ export function SortableProgramItem({
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
+  };
+
+  const handleExport = async () => {
+    try {
+      const result = await saveFileDialog({
+        title: t('common.export'),
+        filters: [{ name: 'HTML Files', extensions: ['html'] }],
+        defaultName: `${program.name}.html`
+      });
+
+      if (result.success && result.data?.path) {
+        const writeResult = await writeFileContent(result.data.path, program.content);
+        if (writeResult.success) {
+          toast.success(t('program.export_success'));
+        } else {
+          toast.error(t('program.export_failed'));
+        }
+      }
+    } catch (error) {
+      console.error('Export error:', error);
+      toast.error(t('program.export_failed'));
+    }
   };
 
   return (
@@ -126,6 +152,10 @@ export function SortableProgramItem({
               <DropdownMenuItem onClick={(e) => {e.stopPropagation(); onViewLog()}}>
                 <FileText className="h-4 w-4 mr-2" />
                 {t('common.view_log')}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={(e) => {e.stopPropagation(); handleExport()}}>
+                <Download className="h-4 w-4 mr-2" />
+                {t('common.export')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

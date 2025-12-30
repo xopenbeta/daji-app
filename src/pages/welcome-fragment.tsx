@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAtom } from "jotai";
 import { useState, useEffect, useRef } from "react";
 import { createProgramDialogStateAtom } from "@/store";
-import { Github, Server, Code, Database, Settings, PanelLeft, Bot, Zap, Globe, Box, Layers, Terminal, Command, Cpu, Plus, FolderOpen, Book, Clock, ArrowRight, Search, GripVertical, Play, Square, Hexagon, Info, MemoryStick, HardDrive, Wifi } from "lucide-react";
+import { Github, Server, Code, Database, Settings, PanelLeft, Bot, Zap, Globe, Box, Layers, Terminal, Command, Cpu, Plus, FolderOpen, Book, Clock, ArrowRight, Search, GripVertical, Play, Square, Hexagon, Info, MemoryStick, HardDrive, Wifi, Upload } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -27,12 +27,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart } from "@/components/ui/pie-chart";
 import { Progress } from "@/components/ui/progress";
 import { useTranslation } from "react-i18next";
+import { useFileOperations } from "@/hooks/file-operations";
+import { toast } from "sonner";
+import { v4 as uuidv4 } from 'uuid';
+import { addProgram } from "@/lib/db";
 
 export function WelcomeFragment({ onOpen }: {
     onOpen?: () => void;
 }) {
     const [selectedEnvId, setSelectedEnvId] = useState<string | null>(null);
     const { t } = useTranslation();
+    const { openFileDialog, readFileContent } = useFileOperations();
 
     const [, setCreateProgramDialogState] = useAtom(createProgramDialogStateAtom);
     const [inputValue, setInputValue] = useState("");
@@ -71,6 +76,41 @@ export function WelcomeFragment({ onOpen }: {
         setInputValue("");
     };
 
+    const handleImport = async () => {
+        try {
+            const result = await openFileDialog({
+                title: t('common.import'),
+                filters: [{ name: 'HTML Files', extensions: ['html', 'htm'] }]
+            });
+
+            if (result.success && result.data?.path) {
+                const contentResult = await readFileContent(result.data.path);
+                if (contentResult.success && contentResult.data?.content) {
+                    // 从文件名提取程序名（去除扩展名）
+                    const fileName = result.data.path.split('/').pop() || 'imported';
+                    const programName = fileName.replace(/\.(html|htm)$/i, '');
+                    
+                    // 创建新程序
+                    const newProgram = {
+                        id: uuidv4(),
+                        name: programName,
+                        content: contentResult.data.content,
+                        createdAt: Date.now(),
+                        updatedAt: Date.now(),
+                    };
+                    
+                    await addProgram(newProgram);
+                    toast.success(t('program.import_success'));
+                } else {
+                    toast.error(t('program.import_failed'));
+                }
+            }
+        } catch (error) {
+            console.error('Import error:', error);
+            toast.error(t('program.import_failed'));
+        }
+    };
+
     return (
         <div className="relative w-full h-full bg-white dark:bg-[#030303] text-gray-900 dark:text-white overflow-hidden flex flex-col font-sans selection:bg-blue-500/20 dark:selection:bg-white/20">
             {/* Cursor-style Background */}
@@ -80,6 +120,19 @@ export function WelcomeFragment({ onOpen }: {
                 
                 {/* Grid pattern */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+            </div>
+
+            {/* Import button at top right */}
+            <div className="absolute top-4 left-6 z-20">
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleImport}
+                    className="gap-2 shadow-none"
+                >
+                    <Upload className="w-4 h-4" />
+                    {t('common.import')}
+                </Button>
             </div>
 
             {/* Main Content - App Welcome Screen */}

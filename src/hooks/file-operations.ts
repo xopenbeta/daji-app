@@ -1,4 +1,4 @@
-import { ipcOpenFolderInFinder, ipcSelectFolder } from "../ipc/file-operations";
+import { ipcOpenFolderInFinder, ipcSelectFolder, ipcOpenFileDialog, ipcSaveFileDialog, ipcReadFileContent, ipcWriteFileContent } from "../ipc/file-operations";
 
 export function useFileOperations() {
   function openFolderInFinder(folderPath: string) {
@@ -9,8 +9,37 @@ export function useFileOperations() {
     return ipcSelectFolder(options || {})
   }
 
+  async function openFileDialog(options?: {
+    title?: string;
+    filters?: Array<{ name: string; extensions: string[] }>;
+    defaultPath?: string;
+  }) {
+    return ipcOpenFileDialog(options)
+  }
+
+  async function saveFileDialog(options?: {
+    title?: string;
+    filters?: Array<{ name: string; extensions: string[] }>;
+    defaultPath?: string;
+    defaultName?: string;
+  }) {
+    return ipcSaveFileDialog(options)
+  }
+
+  async function readFileContent(filePath: string) {
+    return ipcReadFileContent(filePath)
+  }
+
+  async function writeFileContent(filePath: string, content: string) {
+    return ipcWriteFileContent(filePath, content)
+  }
+
   return {
     openFolderInFinder,
-    selectFolder
+    selectFolder,
+    openFileDialog,
+    saveFileDialog,
+    readFileContent,
+    writeFileContent
   }
 }
