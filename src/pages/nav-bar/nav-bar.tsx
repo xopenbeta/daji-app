@@ -76,6 +76,7 @@ export default function NavBar({ onClose }: NavBarProps) {
   const [createProgramDialogState, setCreateProgramDialogState] = useAtom(createProgramDialogStateAtom)
   const [isSettingDialogOpen, setIsSettingDialogOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     loadPrograms()
@@ -153,6 +154,15 @@ export default function NavBar({ onClose }: NavBarProps) {
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
+  const handleContainerClick = (e: React.MouseEvent) => {
+    if (!scrollAreaRef.current) return;
+    const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLDivElement;
+    // 只有点击容器本身时才清除选中状态
+    if (e.target === viewport) {
+      setNowProgramId('')
+    }
+  }
+
   return (
     <div className={cn("w-full min-w-0 h-full flex flex-col")}>
       {/* Search Bar with Add Button */}
@@ -187,7 +197,7 @@ export default function NavBar({ onClose }: NavBarProps) {
       </div>
 
       {/* Program List */}
-      <ScrollArea className="flex-1 w-full min-w-0 min-h-0">
+      <ScrollArea className="flex-1 w-full min-w-0 min-h-0" onClick={handleContainerClick} ref={scrollAreaRef}>
         <div className="p-0 pl-[10px] pr-[4px] w-full min-w-0 min-h-full">
           <DndContext
             sensors={sensors}
