@@ -50,10 +50,13 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
     const { scrollAreaRef, resetIsAutoScroll } = useScrollHooks(chatMessages, open);
 
     const [debouncedGeneratedCode, setDebouncedGeneratedCode] = useState<string>(generatedCode);
+    const debounceTimeRef = useRef(0);
 
     // Reset or load initial state when dialog opens
     useEffect(() => {
         if (open) {
+            // reset loading state first; streaming (if any) will manage it afterwards
+            setIsLoading(false);
             clearChatMessages();
             clearLogs(); // Clear logs
             if (initialProgram) {
@@ -70,7 +73,6 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
                 }
             }
             setInputValue('');
-            setIsLoading(false);
             setActiveTab('preview');
         }
     }, [open, initialProgram, initialPrompt]);
@@ -215,6 +217,13 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
 
     // Debounce generatedCode to avoid frequent iframe re-renders during streaming
     useEffect(() => {
+        // 防抖
+        const now = Date.now();
+        if (now - debounceTimeRef.current > 300) {
+            setDebouncedGeneratedCode(generatedCode);
+            debounceTimeRef.current = now;
+        }
+        // 节流，这里节流只是为了生成最后代码生成的程序
         const id = setTimeout(() => setDebouncedGeneratedCode(generatedCode), 300);
         return () => clearTimeout(id);
     }, [generatedCode]);
