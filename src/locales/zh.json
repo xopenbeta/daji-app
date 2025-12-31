@@ -121,6 +121,7 @@
     "unnamed": "未命名程序",
     "program_name": "程序名称",
     "generated": "已生成",
+    "generating": "生成中...",
     "waiting": "等待生成...",
     "ai_hello": "你好！我是你的AI编程助手。请告诉我你想做什么样的程序？",
     "ai_continue": "你好！我们可以继续完善这个程序。",

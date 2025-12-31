@@ -121,6 +121,7 @@
     "unnamed": "Unnamed Program",
     "program_name": "Program Name",
     "generated": "Generated",
+    "generating": "Generating...",
     "waiting": "Waiting...",
     "ai_hello": "Hello! I am your AI programming assistant. What kind of program would you like to create?",
     "ai_continue": "Hello! We can continue to improve this program.",

@@ -49,6 +49,8 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
 
     const { scrollAreaRef, resetIsAutoScroll } = useScrollHooks(chatMessages, open);
 
+    const [debouncedGeneratedCode, setDebouncedGeneratedCode] = useState<string>(generatedCode);
+
     // Reset or load initial state when dialog opens
     useEffect(() => {
         if (open) {
@@ -101,6 +103,9 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
         }]);
 
         try {
+            // prepare abort controller and loading state
+            abortControllerRef.current = new AbortController();
+            setIsLoading(true);
             const messages = [
                 { role: 'system', content: systemPrompt },
                 ...chatMessages.map(msg => ({ role: msg.role, content: msg.content })),
@@ -207,6 +212,12 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
             abortControllerRef.current = null;
         }
     };
+
+    // Debounce generatedCode to avoid frequent iframe re-renders during streaming
+    useEffect(() => {
+        const id = setTimeout(() => setDebouncedGeneratedCode(generatedCode), 300);
+        return () => clearTimeout(id);
+    }, [generatedCode]);
 
     const handleInterrupt = () => {
         if (abortControllerRef.current) {
@@ -405,7 +416,7 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
                                                 </>
                                             )}
                                         </div>
-                                        <span className="text-xs text-muted-foreground">{generatedCode ? t('program.generated') : t('program.waiting')}</span>
+                                        <span className="text-xs text-muted-foreground">{isLoading ? t('program.generating') : (generatedCode ? t('program.generated') : t('program.waiting'))}</span>
                                         <TabsList className="h-8">
                                             <TabsTrigger value="preview" className="text-xs px-3"><Play size={14} className="mr-1.5" />{t('common.preview')}</TabsTrigger>
                                             <TabsTrigger value="code" className="text-xs px-3"><FileCode size={14} className="mr-1.5" />{t('common.code')}</TabsTrigger>
@@ -422,7 +433,7 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
                                     <TabsContent value="preview" forceMount className="flex-1 relative mt-0 h-full overflow-hidden data-[state=inactive]:hidden">
                                         {generatedCode ? (
                                             <iframe
-                                                srcDoc={injectLogInterceptor(generatedCode)}
+                                                srcDoc={injectLogInterceptor(debouncedGeneratedCode)}
                                                 className="w-full h-full border-none"
                                                 sandbox="allow-scripts allow-modals allow-forms allow-popups allow-same-origin"
                                                 title="preview"

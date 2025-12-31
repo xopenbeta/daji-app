@@ -12,7 +12,6 @@ import { Download, Loader2 } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 // @ts-ignore
 import rehypeHighlight from 'rehype-highlight'
-import 'highlight.js/styles/github-dark.css'
 
 export function UpdateDialog() {
   const { t } = useTranslation()
