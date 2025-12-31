@@ -9,6 +9,10 @@ import { useAtom } from 'jotai'
 import { updateAvailableAtom } from '@/store/appSettings'
 import { useTranslation } from 'react-i18next'
 import { Download, Loader2 } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
+// @ts-ignore
+import rehypeHighlight from 'rehype-highlight'
+import 'highlight.js/styles/github-dark.css'
 
 export function UpdateDialog() {
   const { t } = useTranslation()
@@ -98,8 +102,10 @@ export function UpdateDialog() {
             <div>
               <h4 className="text-sm font-medium mb-2">{t('update_dialog.whats_new')}</h4>
               <ScrollArea className="h-48 rounded-md border border-border p-3">
-                <div className="text-sm text-muted-foreground whitespace-pre-wrap">
-                  {update.body}
+                <div className="text-sm text-muted-foreground prose prose-sm dark:prose-invert max-w-none prose-headings:mt-2 prose-headings:mb-1 prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0">
+                  <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+                    {update.body}
+                  </ReactMarkdown>
                 </div>
               </ScrollArea>
             </div>
