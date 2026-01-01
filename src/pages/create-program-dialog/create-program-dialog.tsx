@@ -119,27 +119,8 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
                 'Authorization': `Bearer ${appSettings.ai.apiKey}`
             };
 
-            const response = await fetch(`${apiUrl}/chat/completions`, {
-                method: 'POST',
-                headers,
-                signal: abortControllerRef.current?.signal,
-                body: JSON.stringify({
-                    model: appSettings.ai.model || 'gpt-3.5-turbo',
-                    messages,
-                    temperature: 0.1, // 越小越精确
-                    stream: true
-                })
-            });
-
-            if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
-
-            const reader = response.body?.getReader();
-            if (!reader) throw new Error('No response body');
-
-            const decoder = new TextDecoder();
-            let aiContent = '';
-            let buffer = '';
             const aiMsgId = Date.now().toString() + 'ai';
+            let aiContent = '';
 
             // Add initial empty AI message
             setChatMessages(prev => [...prev, {
@@ -149,44 +130,82 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
                 timestamp: new Date().toLocaleTimeString()
             }]);
 
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
+            let continueCount = 0;
+            const maxContinues = 10;
 
-                const chunk = decoder.decode(value, { stream: true });
-                buffer += chunk;
-                const lines = buffer.split('\n');
-                buffer = lines.pop() || '';
+            while (continueCount < maxContinues) {
+                const response = await fetch(`${apiUrl}/chat/completions`, {
+                    method: 'POST',
+                    headers,
+                    signal: abortControllerRef.current?.signal,
+                    body: JSON.stringify({
+                        model: appSettings.ai.model || 'gpt-3.5-turbo',
+                        messages,
+                        temperature: 0.1, // 越小越精确
+                        stream: true
+                    })
+                });
 
-                for (const line of lines) {
-                    if (line.trim() === '') continue;
-                    if (line.startsWith('data: ') && line !== 'data: [DONE]') {
-                        try {
-                            const data = JSON.parse(line.slice(6));
-                            const content = data.choices[0]?.delta?.content || '';
-                            if (content) {
-                                aiContent += content;
+                if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
 
-                                // Update the last message (which is the AI message)
-                                setChatMessages(prev => {
-                                    const newMsgs = [...prev];
-                                    const lastMsg = newMsgs[newMsgs.length - 1];
-                                    if (lastMsg.id === aiMsgId) {
-                                        lastMsg.content = aiContent;
+                const reader = response.body?.getReader();
+                if (!reader) throw new Error('No response body');
+
+                const decoder = new TextDecoder();
+                let buffer = '';
+                let finishReason = null;
+                let currentRequestContent = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    buffer += chunk;
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop() || '';
+
+                    for (const line of lines) {
+                        if (line.trim() === '') continue;
+                        if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                const content = data.choices[0]?.delta?.content || '';
+                                finishReason = data.choices[0]?.finish_reason;
+
+                                if (content) {
+                                    currentRequestContent += content;
+                                    aiContent += content;
+
+                                    // Update the last message (which is the AI message)
+                                    setChatMessages(prev => {
+                                        const newMsgs = [...prev];
+                                        const lastMsg = newMsgs[newMsgs.length - 1];
+                                        if (lastMsg.id === aiMsgId) {
+                                            lastMsg.content = aiContent;
+                                        }
+                                        return newMsgs;
+                                    });
+
+                                    // Try to extract code in real-time
+                                    const code = extractCode(aiContent);
+                                    if (code) {
+                                        setGeneratedCode(code);
                                     }
-                                    return newMsgs;
-                                });
-
-                                // Try to extract code in real-time
-                                const code = extractCode(aiContent);
-                                if (code) {
-                                    setGeneratedCode(code);
                                 }
+                            } catch (e) {
+                                // ignore
                             }
-                        } catch (e) {
-                            // ignore
                         }
                     }
+                }
+
+                if (finishReason === 'length') {
+                    continueCount++;
+                    messages.push({ role: 'assistant', content: currentRequestContent });
+                    messages.push({ role: 'user', content: 'Continue' });
+                } else {
+                    break;
                 }
             }
 
