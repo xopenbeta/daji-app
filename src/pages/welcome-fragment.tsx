@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAtom } from "jotai";
 import { useState, useEffect, useRef } from "react";
 import { createProgramDialogStateAtom } from "@/store";
-import { Github, Server, Code, Database, Settings, PanelLeft, Bot, Zap, Globe, Box, Layers, Terminal, Command, Cpu, Plus, FolderOpen, Book, Clock, ArrowRight, Search, GripVertical, Play, Square, Hexagon, Info, MemoryStick, HardDrive, Wifi, Upload } from "lucide-react";
+import { Github, Server, Code, Database, Settings, PanelLeft, Bot, Zap, Globe, Box, Layers, Terminal, Command, Cpu, Plus, FolderOpen, Book, Clock, ArrowRight, Search, GripVertical, Play, Square, Hexagon, Info, MemoryStick, HardDrive, Wifi, Upload, MessageCircle, MessageSquare } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -38,6 +39,7 @@ export function WelcomeFragment({ onOpen }: {
     const [selectedEnvId, setSelectedEnvId] = useState<string | null>(null);
     const { t } = useTranslation();
     const { openFileDialog, readFileContent } = useFileOperations();
+    const [showContactDialog, setShowContactDialog] = useState(false);
 
     const [, setCreateProgramDialogState] = useAtom(createProgramDialogStateAtom);
     const [inputValue, setInputValue] = useState("");
@@ -136,11 +138,23 @@ export function WelcomeFragment({ onOpen }: {
             </div>
 
             {/* Main Content - App Welcome Screen */}
-            <div className="flex-1 overflow-y-auto z-10 custom-scrollbar flex flex-col items-center justify-center -mt-10">
+            <div className="flex-1 overflow-y-auto z-10 custom-scrollbar flex flex-col items-center">
                 <div className="w-full max-w-2xl px-6 flex flex-col gap-8">
                     
                     {/* Brand Header */}
                     <div className="text-center space-y-4 mt-14">
+                        <div className="w-full flex justify-center">
+                            <a
+                                href="https://github.com/xopenbeta/daji-app"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20 dark:hover:bg-emerald-500/20"
+                            >
+                                <Github className="w-4 h-4" />
+                                <span className="text-xs">如果喜欢 Daji，去 GitHub 点个 Star</span>
+                                <ArrowRight className="w-3.5 h-3.5 opacity-70" />
+                            </a>
+                        </div>
                         <div>
                             <h1 className="text-3xl font-medium tracking-tight text-gray-900 dark:text-white mb-2">{t('app.title')}</h1>
                             <p className="text-gray-500 dark:text-gray-400 text-sm">{t('app.description')}</p>
@@ -185,8 +199,89 @@ export function WelcomeFragment({ onOpen }: {
                         </div>
                     </div>
 
+                    {/* Feedback & Suggestions */}
+                    <div className="space-y-3 mb-6">
+                        <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider px-1">建议反馈</h2>
+                        <div className="flex flex-col rounded-lg border border-gray-200 dark:border-white/5 bg-gray-50/50 dark:bg-white/[0.02] overflow-hidden">
+                            <a 
+                                href="https://github.com/xopenbeta/daji-app" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-3 p-3 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors cursor-pointer border-b border-gray-200 dark:border-white/5 last:border-0"
+                            >
+                                <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center text-gray-700 dark:text-white">
+                                    <Github className="w-4 h-4" />
+                                </div>
+                                <div className="flex-1">
+                                    <div className="text-xs font-medium text-gray-900 dark:text-white">Github</div>
+                                    <div className="text-[10px] text-gray-500 dark:text-gray-400">提交 Issue 或 Star 支持我们</div>
+                                </div>
+                                <ArrowRight className="w-3 h-3 text-gray-400" />
+                            </a>
+                            
+                            <div 
+                                onClick={() => setShowContactDialog(true)}
+                                className="flex items-center gap-3 p-3 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors cursor-pointer border-b border-gray-200 dark:border-white/5 last:border-0"
+                            >
+                                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                    <MessageCircle className="w-4 h-4" />
+                                </div>
+                                <div className="flex-1">
+                                    <div className="text-xs font-medium text-gray-900 dark:text-white">QQ</div>
+                                    <div className="text-[10px] text-gray-500 dark:text-gray-400">加入 QQ 群交流</div>
+                                </div>
+                                <ArrowRight className="w-3 h-3 text-gray-400" />
+                            </div>
+
+                            <div 
+                                onClick={() => setShowContactDialog(true)}
+                                className="flex items-center gap-3 p-3 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors cursor-pointer"
+                            >
+                                <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-500/20 flex items-center justify-center text-green-600 dark:text-green-400">
+                                    <MessageSquare className="w-4 h-4" />
+                                </div>
+                                <div className="flex-1">
+                                    <div className="text-xs font-medium text-gray-900 dark:text-white">微信</div>
+                                    <div className="text-[10px] text-gray-500 dark:text-gray-400">加入微信群交流</div>
+                                </div>
+                                <ArrowRight className="w-3 h-3 text-gray-400" />
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+
+            <Dialog open={showContactDialog} onOpenChange={setShowContactDialog}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>加入社区</DialogTitle>
+                        <DialogDescription>
+                            加入我们的 QQ 群或微信群，获取最新动态和帮助。
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="flex items-center gap-4 p-4 rounded-lg border border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/[0.02]">
+                            <div className="p-2 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-lg">
+                                <MessageCircle className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <div className="font-medium text-gray-900 dark:text-white">QQ 群</div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">群号：1077940774</div>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4 p-4 rounded-lg border border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/[0.02]">
+                            <div className="p-2 bg-green-100 dark:bg-green-500/20 text-green-600 dark:text-green-400 rounded-lg">
+                                <MessageSquare className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <div className="font-medium text-gray-900 dark:text-white">微信群</div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">请加微信：zhang-4696，备注“答己”，即可进入微信群</div>
+                            </div>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }
