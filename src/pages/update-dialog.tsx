@@ -24,22 +24,22 @@ export function UpdateDialog() {
   useEffect(() => {
     const checkForUpdates = async () => {
       try {
-        console.log('正在检查更新...')
+        console.log('Checking for updates...')
         const updateResult = await check()
-        console.log('检查更新结果:', updateResult)
+        console.log('Check update result:', updateResult)
         if (updateResult) {
           setUpdate(updateResult)
           setIsDialogOpen(true)
           setUpdateAvailable(true)
-          console.log('发现新版本:', updateResult.version)
-          console.log('更新内容:', updateResult.body)
+          console.log('New version found:', updateResult.version)
+          console.log('Update content:', updateResult.body)
         }
       } catch (error) {
-        console.error('检查更新失败:', error)
+        console.error('Check update failed:', error)
       }
     }
 
-    // 冷启动时检查更新
+    // Check for updates on cold start
     checkForUpdates()
   }, [])
 
@@ -49,7 +49,7 @@ export function UpdateDialog() {
     setIsUpdating(true)
     setProgress(0)
     try {
-      console.log('开始下载并安装更新...')
+      console.log('Starting download and install update...')
       let downloadedBytes = 0
       let totalBytes = 0
 
@@ -71,17 +71,17 @@ export function UpdateDialog() {
             break
         }
       })
-      console.log('更新已安装，重启应用...')
+      console.log('Update installed, relaunching app...')
       await relaunch()
     } catch (error) {
-      console.error('安装更新失败:', error)
+      console.error('Install update failed:', error)
       setIsUpdating(false)
     }
   }
 
   const handleRemindLater = () => {
     setIsDialogOpen(false)
-    // 不清空 update，保持 updateAvailable 状态，用户可以从导航栏看到更新提示
+    // Do not clear update, keep updateAvailable state, user can see update notification from nav bar
   }
 
   return (

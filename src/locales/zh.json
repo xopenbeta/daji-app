@@ -48,6 +48,8 @@
     "select_language": "选择语言",
     "select_theme": "选择主题",
     "select_provider": "选择AI提供商",
+    "language_zh": "中文",
+    "provider_qwen": "阿里千问",
     "enter_api_key": "输入您的API Key",
     "enter_base_url": "API端点地址",
     "enter_model": "点击上方快速选择或手动输入模型名称",
@@ -96,7 +98,10 @@
     "error": "错误",
     "warn": "警告",
     "info": "信息",
-    "debug": "调试"
+    "debug": "调试",
+    "expand_params": "展开参数",
+    "collapse_params": "收起参数",
+    "drag_to_resize": "拖动这里调整高度"
   },
   "welcome": {
     "getting_started": "快速开始",
@@ -106,6 +111,18 @@
     "step2_desc": "用AI开发",
     "step3": "运行",
     "step3_desc": "一键启动",
+    "star_on_github": "如果喜欢 Daji，去 GitHub 点个 Star",
+    "feedback": "建议反馈",
+    "feedback_desc": "提交 Issue 或 Star 支持我们",
+    "join_qq": "加入 QQ 群交流",
+    "wechat": "微信",
+    "join_wechat": "加入微信群交流",
+    "join_community": "加入社区",
+    "join_community_desc": "加入我们的 QQ 群或微信群，获取最新动态和帮助。",
+    "qq_group": "QQ 群",
+    "qq_group_id": "群号：{{id}}",
+    "wechat_group": "微信群",
+    "wechat_group_desc": "请加微信：zhang-4696，备注“答己”，即可进入微信群",
     "placeholder_url_encoder": "URL编码解码器",
     "placeholder_calculator": "计算器",
     "placeholder_qrcode": "二维码生成器",
@@ -114,6 +131,7 @@
   "program": {
     "create_new": "创建新程序",
     "save_program": "保存程序",
+    "drag_to_sort": "拖动排序",
     "export_success": "导出成功",
     "export_failed": "导出失败",
     "import_success": "导入成功",
@@ -136,6 +154,8 @@
     "ai_request_failed": "AI请求失败",
     "interrupted": "已中断生成",
     "fix_error_prompt": "我遇到了这个错误，请帮我修复：\n{{error}}",
-    "generated_desc": "AI生成的小程序"
+    "generated_desc": "AI生成的小程序",
+    "error_detected_fix": "检测到程序运行错误，是否需要我尝试修复？",
+    "system_prompt": "你是一个专业的Web前端开发专家。\n你的任务是根据用户的需求生成一个单文件的HTML小程序。\n要求：\n1. 代码必须包含在一个完整的HTML文件中。\n2. CSS样式请写在<style>标签中，风格样式类似于下面这个prompt（当然你没法用tailwindcss）。\n···\n\"Create a React component using Tailwind CSS and shadcn/ui design principles. The aesthetic should be 'Linear-style' or 'Vercel-style' modern developer tool interface.\n\nKey Design Requirements:\n\nTheme: Minimalist, clean, and high-contrast. Support Dark Mode with a deep black background (e.g., #030303) and subtle borders (e.g., border-white/5 or white/10).\nBackground: Implement a subtle grid pattern background with a radial mask to fade it out edges, and add a faint, blurred ambient glow (gradient blob) at the top or behind key elements.\nTypography: Use a sans-serif font (Inter/Geist style). Use small text sizes (text-sm, text-xs) with muted colors (text-gray-500) for secondary information.\nComponents:\nCards: Flat backgrounds with thin, subtle borders.\nButtons: Use 'Ghost' or 'Outline' variants for secondary actions.\nIcons: Use Lucide-react icons, sized small (w-4 h-4).\nInteractivity: Add subtle hover states (e.g., hover:bg-white/5) and smooth transitions (transition-all).\nLayout: Use Flexbox and Grid for a responsive dashboard-like structure.\"\n···\n3. JavaScript逻辑请写在<script>标签中。\n4. 界面美观，交互流畅，默认白色背景，主题色是蓝色，小程序占满全屏幕，外围没有border和margin。\n5. 请在代码的关键逻辑处添加 console.log/error/warn 日志，但是界面上不要显示这些日志，不要有日志面板。\n6. 请直接输出代码，每一行代码上都要加上注释。\n7. 如果需要修改现有代码，请输出完整的修改后的代码。\n8. 代码应该尽可能的少，样式应该尽可能的少，功能应该尽可能的少，仅仅满足用户提出的问题即可。\n9. 生成的代码越少，功能才会越正确。\n10. 请务必将代码包裹在 ```html ... ``` 代码块中。\n当前已有代码（如果有）：\n{{generatedCode}}"
   }
 }

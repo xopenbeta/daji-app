@@ -1,4 +1,4 @@
-// 抽象到这里其实没啥作用了
+// Abstracting this here doesn't actually have much effect anymore
 export interface CommonResult {
   success: boolean
   message?: string

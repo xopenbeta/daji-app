@@ -1,11 +1,11 @@
 /**
- * Tauri API 统一封装
- * 用于替换 Electron 的 ipcRenderer 调用
+ * Tauri API unified encapsulation
+ * Used to replace Electron's ipcRenderer calls
  */
 
 import { invoke } from '@tauri-apps/api/core';
 
-// 通用的 IPC 调用封装
+// Generic IPC call encapsulation
 export async function invokeCommand<T = any>(command: string, args?: any): Promise<T> {
   try {
     const result = await invoke(command, args);
@@ -16,19 +16,19 @@ export async function invokeCommand<T = any>(command: string, args?: any): Promi
   }
 }
 
-// 打开外部链接或文件
+// Open external link or file
 export async function openExternal(path: string): Promise<void> {
   await invoke('plugin:opener|open', { path });
 }
 
-// 类型定义
+// Type definitions
 export interface TauriResult<T = any> {
   success: boolean;
   data?: T;
   error?: string;
 }
 
-// 通用的结果包装器
+// Generic result wrapper
 export function wrapResult<T>(data: T): TauriResult<T> {
   return {
     success: true,

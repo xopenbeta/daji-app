@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * 安全的 JSON 序列化函数，处理循环引用
+ * Safe JSON serialization function, handles circular references
  */
 export function safeStringify(value: any, space?: number): string {
   const cache = new WeakSet()

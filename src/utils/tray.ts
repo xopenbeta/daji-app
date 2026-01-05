@@ -3,27 +3,27 @@ import { Menu } from '@tauri-apps/api/menu';
 import { defaultWindowIcon } from '@tauri-apps/api/app';
 
 /**
- * 设置系统托盘图标（前端版本）
- * 注意：通常由后端 Rust 代码处理，这是备用方案
+ * Setup system tray icon (frontend version)
+ * Note: Usually handled by backend Rust code, this is a fallback
  */
 export async function setupTray() {
   try {
-    // 创建托盘菜单
+    // Create tray menu
     const menu = await Menu.new({
       items: [
         {
           id: 'show',
-          text: '显示主窗口',
+          text: 'Show Main Window',
           action: () => {
-            console.log('显示主窗口');
-            // 可以调用 Tauri API 显示窗口
+            console.log('Show Main Window');
+            // Can call Tauri API to show window
           }
         },
         {
           id: 'hide',
-          text: '隐藏窗口',
+          text: 'Hide Window',
           action: () => {
-            console.log('隐藏窗口');
+            console.log('Hide Window');
           }
         },
         {
@@ -32,71 +32,71 @@ export async function setupTray() {
         },
         {
           id: 'quit',
-          text: '退出',
+          text: 'Quit',
           action: () => {
-            console.log('退出应用');
-            // 可以调用 Tauri API 退出应用
+            console.log('Quit Application');
+            // Can call Tauri API to quit application
           }
         }
       ]
     });
 
-    // 创建托盘图标
+    // Create tray icon
     const icon = await defaultWindowIcon();
     if (!icon) {
-      throw new Error('无法获取默认窗口图标');
+      throw new Error('Unable to get default window icon');
     }
 
     const tray = await TrayIcon.new({
       icon,
       menu,
       menuOnLeftClick: false,
-      tooltip: '答己',
+      tooltip: 'Daji',
       action: (event) => {
         switch (event.type) {
           case 'Click':
             console.log(
-              `鼠标 ${event.button} 按钮按下, 状态: ${event.buttonState}`
+              `Mouse ${event.button} button pressed, state: ${event.buttonState}`
             );
             break;
           case 'DoubleClick':
-            console.log(`鼠标 ${event.button} 按钮双击`);
+            console.log(`Mouse ${event.button} button double-clicked`);
             break;
           case 'Enter':
             console.log(
-              `鼠标进入托盘图标 位置: ${event.rect.position.x}, ${event.rect.position.y}`
+              `Mouse entered tray icon position: ${event.rect.position.x}, ${event.rect.position.y}`
             );
             break;
           case 'Move':
             console.log(
-              `鼠标在托盘图标移动 位置: ${event.rect.position.x}, ${event.rect.position.y}`
+              `Mouse moving on tray icon position: ${event.rect.position.x}, ${event.rect.position.y}`
             );
             break;
           case 'Leave':
             console.log(
-              `鼠标离开托盘图标 位置: ${event.rect.position.x}, ${event.rect.position.y}`
+              `Mouse left tray icon position: ${event.rect.position.x}, ${event.rect.position.y}`
             );
             break;
         }
       }
     });
 
-    console.log('系统托盘图标已创建', tray);
+    console.log('System tray icon created', tray);
     return tray;
   } catch (error) {
-    console.error('创建系统托盘图标失败:', error);
+    console.error('Failed to create system tray icon:', error);
     throw error;
   }
 }
 
 /**
- * 更新托盘图标标题
+ * Update tray icon title
  */
 export async function updateTrayTitle(title: string) {
   try {
-    // 这里需要保存 tray 实例的引用
-    console.log('更新托盘标题:', title);
+    // Need to save a reference to the tray instance here
+    console.log('Update tray title:', title);
   } catch (error) {
-    console.error('更新托盘标题失败:', error);
+    console.error('Failed to update tray title:', error);
   }
 }

@@ -5,16 +5,16 @@ import { setAppTheme } from "../utils/theme";
 import { toast } from "sonner";
 import i18n from "@/i18n";
 
-// appConfig的数据不重要，用不着放在文件里
+// appConfig data is not critical, no need to store in file
 const APP_SETTINGS_STORAGE_KEY = 'daji-app-settings'
 
-// 从localStorage读取应用设置数据
+// Load app settings data from localStorage
 export const loadAppSettingsFromStorage = (): AppSettings => {
   try {
     const settingsStr = localStorage.getItem(APP_SETTINGS_STORAGE_KEY)
     const parsedSettings = JSON.parse(settingsStr || '{}');
     
-    // 确保 ai 配置存在且完整
+    // Ensure AI configuration exists and is complete
     const aiSettings = {
       ...defaultAppSettings.ai,
       ...(parsedSettings.ai || {})
@@ -31,7 +31,7 @@ export const loadAppSettingsFromStorage = (): AppSettings => {
   }
 }
 
-// 保存应用设置数据到localStorage
+// Save app settings data to localStorage
 export const saveAppSettingsToStorage = (settings: AppSettings) => {
   localStorage.setItem(APP_SETTINGS_STORAGE_KEY, JSON.stringify(settings))
 }
@@ -40,7 +40,7 @@ export function useAppSettings() {
   const [appSettings, setAppSettings] = useAtom(appSettingsAtom);
 
   function initAppSettings() {
-    // 从localStorage读取应用设置
+    // Load app settings from localStorage
     let appSettings = loadAppSettingsFromStorage();
     setAppSettings(appSettings);
     setAppTheme(appSettings.theme);
@@ -54,7 +54,7 @@ export function useAppSettings() {
     setAppSettings((currentSettings) => {
       const updatedSettings = { ...(currentSettings ?? defaultAppSettings), ...updates };
       saveAppSettingsToStorage(updatedSettings);
-      if (updates.theme) { // 如果theme有改动
+      if (updates.theme) { // If theme has changed
         setAppTheme(updates.theme);
       }
       if (updates.language) {

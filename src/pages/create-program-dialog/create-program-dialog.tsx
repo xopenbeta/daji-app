@@ -14,10 +14,9 @@ import { useAtom } from "jotai";
 import { Bot, Send, User, Square, Trash2, FileCode, Terminal, Play, Pencil, Wrench } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { toast } from "sonner";
-import { v4 as uuidv4 } from 'uuid';
 import { useScrollHooks } from "./useScrollHooks";
 import { useLogHooks } from "./useLogHooks";
-import { extractCode, injectLogInterceptor, renderMarkdown, systemPrompt } from "./renderText";
+import { extractCode, injectLogInterceptor, renderMarkdown, getSystemPrompt } from "./renderText";
 import { useTranslation } from "react-i18next";
 
 interface CreateProgramDialogProps {
@@ -38,7 +37,7 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
 
     const [inputValue, setInputValue] = useState('');
     const isComposingRef = useRef(false);
-    const lastCompositionEndRef = useRef(0); // 中文输入法下确认输入（按回车）时，浏览器会先结束输入法状态，然后再派发一个回车键事件。
+    const lastCompositionEndRef = useRef(0); // When confirming input in Chinese IME (pressing Enter), the browser ends the IME state first, then dispatches an Enter key event.
     const [generatedCode, setGeneratedCode] = useState<string>('');
     const [programName, setProgramName] = useState(t('program.unnamed'));
     const [isEditingName, setIsEditingName] = useState(false);
@@ -86,7 +85,7 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
             return;
         }
 
-        // 如果是第一句对话且是创建全新程序，将第一句话作为 programName
+        // If it is the first dialogue and creating a brand new program, use the first sentence as programName
         const isFirstUserMessage = chatMessages.filter(m => m.role === 'user').length === 0;
         if (isFirstUserMessage && !initialProgram) {
             setProgramName(contentToSend);
@@ -109,7 +108,7 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
             abortControllerRef.current = new AbortController();
             setIsLoading(true);
             const messages = [
-                { role: 'system', content: systemPrompt },
+                { role: 'system', content: getSystemPrompt(generatedCode) },
                 ...chatMessages.map(msg => ({ role: msg.role, content: msg.content })),
                 { role: 'user', content: contentToSend }
             ];
@@ -141,7 +140,7 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
                     body: JSON.stringify({
                         model: appSettings.ai.model || 'gpt-3.5-turbo',
                         messages,
-                        temperature: 0.1, // 越小越精确
+                        temperature: 0.1, // Lower value for more accuracy
                         stream: true
                     })
                 });
@@ -236,13 +235,13 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
 
     // Debounce generatedCode to avoid frequent iframe re-renders during streaming
     useEffect(() => {
-        // 防抖
+        // Debounce
         const now = Date.now();
         if (now - debounceTimeRef.current > 300) {
             setDebouncedGeneratedCode(generatedCode);
             debounceTimeRef.current = now;
         }
-        // 节流，这里节流只是为了生成最后代码生成的程序
+        // Throttle to generate the final program code
         const id = setTimeout(() => setDebouncedGeneratedCode(generatedCode), 300);
         return () => clearTimeout(id);
     }, [generatedCode]);
@@ -266,7 +265,7 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
         }
 
         const programToSave: Program = {
-            id: initialProgram ? initialProgram.id : uuidv4(),
+            id: initialProgram ? initialProgram.id : crypto.randomUUID(),
             name: programName,
             content: generatedCode,
             createdAt: initialProgram ? initialProgram.createdAt : Date.now(),
@@ -386,7 +385,7 @@ export function CreateProgramDialog({ open, onOpenChange, initialProgram, initia
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Enter' && !e.shiftKey) {
                                                     if (isComposingRef.current || e.nativeEvent.isComposing) return;
-                                                    // 通过延时实现状态的有效判断，这里状态改变比较奇怪
+                                                    // Use delay to ensure valid state check, state change is unusual here
                                                     if (Date.now() - lastCompositionEndRef.current < 100) return;
 
                                                     e.preventDefault();

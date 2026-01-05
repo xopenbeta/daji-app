@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge"
 import { useAtom } from 'jotai'
 import { HardDrive, Info, Moon, RefreshCw, Sun, Monitor, Bot, Code, Power, Globe, Terminal, Folder, Trash2, AlertTriangle, Server, Database, ExternalLink, LogOut } from 'lucide-react'
 import { useEffect, useState, useRef } from 'react'
-import _ from 'lodash'
 import { toast } from 'sonner'
 import { AppSettings, AppTheme, AIProvider } from "@/types/index"
 import { appSettingsAtom } from "../store/appSettings"
@@ -37,7 +36,7 @@ export default function SettingsDialog(props: {
   const [newFontSize, setNewFontSize] = useState(14)
   const saveButtonRef = useRef<HTMLButtonElement>(null)
 
-  // AI设置相关状态
+  // AI settings related state
   const [newAIApiKey, setNewAIApiKey] = useState('')
   const [newAIBaseUrl, setNewAIBaseUrl] = useState('')
   const [newAIModel, setNewAIModel] = useState('')
@@ -96,7 +95,7 @@ export default function SettingsDialog(props: {
     <Dialog open={isSettingDialogOpen} onOpenChange={setIsSettingDialogOpen}>
       <DialogContent 
         className="sm:max-w-[625px] h-[500px] border border-divider rounded-2xl bg-content1 shadow-none flex flex-col"
-        onOpenAutoFocus={(e) => e.preventDefault()} // 防止自动focus到content
+        onOpenAutoFocus={(e) => e.preventDefault()} // Prevent auto-focus on content
       >
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold text-foreground">{t('settings.title')}</DialogTitle>
@@ -138,7 +137,7 @@ export default function SettingsDialog(props: {
                     <SelectItem value="zh" className="heroui-transition hover:bg-content2 dark:hover:bg-content3">
                       <div className="flex items-center">
                         <Globe className="mr-2 h-4 w-4" />
-                        中文
+                        {t('settings.language_zh')}
                       </div>
                     </SelectItem>
                   </SelectContent>
@@ -252,7 +251,7 @@ export default function SettingsDialog(props: {
                 <Label htmlFor="ai-provider" className="text-sm font-medium text-foreground">{t('settings.ai_provider')}</Label>
                 <Select value={newAIProvider} onValueChange={(value: AIProvider) => {
                   setNewAIProvider(value)
-                  // 自动设置默认配置
+                  // Automatically set default configuration
                   if (value === 'openai') {
                     setNewAIBaseUrl('https://api.openai.com/v1')
                     setNewAIModel('gpt-3.5-turbo')
@@ -283,7 +282,7 @@ export default function SettingsDialog(props: {
                     <SelectItem value="qwen" className="heroui-transition hover:bg-content2">
                       <div className="flex items-center">
                         <Bot className="mr-2 h-4 w-4" />
-                        阿里千问
+                        {t('settings.provider_qwen')}
                       </div>
                     </SelectItem>
                   </SelectContent>

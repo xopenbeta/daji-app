@@ -157,7 +157,7 @@ export default function NavBar({ onClose }: NavBarProps) {
   const handleContainerClick = (e: React.MouseEvent) => {
     if (!scrollAreaRef.current) return;
     const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLDivElement;
-    // 只有点击容器本身时才清除选中状态
+    // Only clear selection when clicking on the container itself
     if (e.target === viewport) {
       setNowProgramId('')
     }

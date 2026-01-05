@@ -1,14 +1,14 @@
 import { AppSettings } from "@/types/index"
 
-// 用于存储当前的系统主题监听器
+// Used to store the current system theme listener
 let systemThemeListener: ((event: MediaQueryListEvent) => void) | null = null
 
 export const setAppTheme = (theme: AppSettings['theme']) => {
-    // 应用主题到 document
+    // Apply theme to document
     const root = window.document.documentElement
     root.classList.remove('light', 'dark')
     
-    // 清除之前的监听器
+    // Clear previous listener
     if (systemThemeListener) {
         window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', systemThemeListener)
         systemThemeListener = null
@@ -19,11 +19,11 @@ export const setAppTheme = (theme: AppSettings['theme']) => {
         const systemTheme = mediaQuery.matches ? 'dark' : 'light'
         root.classList.add(systemTheme)
         
-        // 添加系统主题变化监听器
+        // Add system theme change listener
         systemThemeListener = (event: MediaQueryListEvent) => {
             root.classList.remove('light', 'dark')
             root.classList.add(event.matches ? 'dark' : 'light')
-            console.log('系统主题已自动切换到:', event.matches ? 'dark' : 'light')
+            console.log('System theme automatically switched to:', event.matches ? 'dark' : 'light')
         }
         
         mediaQuery.addEventListener('change', systemThemeListener)

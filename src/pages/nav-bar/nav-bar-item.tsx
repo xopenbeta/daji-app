@@ -95,7 +95,7 @@ export function SortableProgramItem({
     <div ref={setNodeRef} style={style} className="mb-2 min-w-0">
       <div
         className={cn(
-          // 使 item 不被内部文字撑宽，并让文字能正确省略
+          // Prevent item from being expanded by internal text and allow text to truncate correctly
           "group relative flex items-center p-2 rounded-lg cursor-pointer heroui-transition overflow-hidden w-full min-w-0",
           isSelected && "bg-content4",
           isDragging && "z-50"
@@ -103,13 +103,13 @@ export function SortableProgramItem({
         onClick={() => onSelect()}
       >
         <div className="flex items-center w-full min-w-0">
-          {/* 拖动图标 */}
+          {/* Drag icon */}
           {isDragEnabled && (
             <div
               {...attributes}
               {...listeners}
               className="mr-2 cursor-grab active:cursor-grabbing hover:text-foreground heroui-transition flex-shrink-0"
-              title="拖动排序"
+              title={t('program.drag_to_sort')}
               onClick={(e) => e.stopPropagation()}
             >
               <GripVertical className="h-4 w-4 text-muted-foreground" />
@@ -123,7 +123,7 @@ export function SortableProgramItem({
           </div>
         </div>
 
-        {/* 绝对定位的操作按钮 */}
+        {/* Absolutely positioned action buttons */}
         <div
           className={cn(
             "absolute right-3 top-1/2 transform -translate-y-1/2",

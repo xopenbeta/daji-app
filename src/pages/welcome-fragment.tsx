@@ -30,7 +30,6 @@ import { Progress } from "@/components/ui/progress";
 import { useTranslation } from "react-i18next";
 import { useFileOperations } from "@/hooks/file-operations";
 import { toast } from "sonner";
-import { v4 as uuidv4 } from 'uuid';
 import { addProgram } from "@/lib/db";
 
 export function WelcomeFragment({ onOpen }: {
@@ -88,13 +87,13 @@ export function WelcomeFragment({ onOpen }: {
             if (result.success && result.data?.path) {
                 const contentResult = await readFileContent(result.data.path);
                 if (contentResult.success && contentResult.data?.content) {
-                    // 从文件名提取程序名（去除扩展名）
+                    // Extract program name from filename (remove extension)
                     const fileName = result.data.path.split('/').pop() || 'imported';
                     const programName = fileName.replace(/\.(html|htm)$/i, '');
                     
-                    // 创建新程序
+                    // Create new program
                     const newProgram = {
-                        id: uuidv4(),
+                        id: crypto.randomUUID(),
                         name: programName,
                         content: contentResult.data.content,
                         createdAt: Date.now(),
@@ -151,7 +150,7 @@ export function WelcomeFragment({ onOpen }: {
                                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20 dark:hover:bg-emerald-500/20"
                             >
                                 <Github className="w-4 h-4" />
-                                <span className="text-xs">如果喜欢 Daji，去 GitHub 点个 Star</span>
+                                <span className="text-xs">{t('welcome.star_on_github')}</span>
                                 <ArrowRight className="w-3.5 h-3.5 opacity-70" />
                             </a>
                         </div>
@@ -201,7 +200,7 @@ export function WelcomeFragment({ onOpen }: {
 
                     {/* Feedback & Suggestions */}
                     <div className="space-y-3 mb-6">
-                        <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider px-1">建议反馈</h2>
+                        <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider px-1">{t('welcome.feedback')}</h2>
                         <div className="flex flex-col rounded-lg border border-gray-200 dark:border-white/5 bg-gray-50/50 dark:bg-white/[0.02] overflow-hidden">
                             <a 
                                 href="https://github.com/xopenbeta/daji-app" 
@@ -214,7 +213,7 @@ export function WelcomeFragment({ onOpen }: {
                                 </div>
                                 <div className="flex-1">
                                     <div className="text-xs font-medium text-gray-900 dark:text-white">Github</div>
-                                    <div className="text-[10px] text-gray-500 dark:text-gray-400">提交 Issue 或 Star 支持我们</div>
+                                    <div className="text-[10px] text-gray-500 dark:text-gray-400">{t('welcome.feedback_desc')}</div>
                                 </div>
                                 <ArrowRight className="w-3 h-3 text-gray-400" />
                             </a>
@@ -228,7 +227,7 @@ export function WelcomeFragment({ onOpen }: {
                                 </div>
                                 <div className="flex-1">
                                     <div className="text-xs font-medium text-gray-900 dark:text-white">QQ</div>
-                                    <div className="text-[10px] text-gray-500 dark:text-gray-400">加入 QQ 群交流</div>
+                                    <div className="text-[10px] text-gray-500 dark:text-gray-400">{t('welcome.join_qq')}</div>
                                 </div>
                                 <ArrowRight className="w-3 h-3 text-gray-400" />
                             </div>
@@ -241,8 +240,8 @@ export function WelcomeFragment({ onOpen }: {
                                     <MessageSquare className="w-4 h-4" />
                                 </div>
                                 <div className="flex-1">
-                                    <div className="text-xs font-medium text-gray-900 dark:text-white">微信</div>
-                                    <div className="text-[10px] text-gray-500 dark:text-gray-400">加入微信群交流</div>
+                                    <div className="text-xs font-medium text-gray-900 dark:text-white">{t('welcome.wechat')}</div>
+                                    <div className="text-[10px] text-gray-500 dark:text-gray-400">{t('welcome.join_wechat')}</div>
                                 </div>
                                 <ArrowRight className="w-3 h-3 text-gray-400" />
                             </div>
@@ -255,9 +254,9 @@ export function WelcomeFragment({ onOpen }: {
             <Dialog open={showContactDialog} onOpenChange={setShowContactDialog}>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                        <DialogTitle>加入社区</DialogTitle>
+                        <DialogTitle>{t('welcome.join_community')}</DialogTitle>
                         <DialogDescription>
-                            加入我们的 QQ 群或微信群，获取最新动态和帮助。
+                            {t('welcome.join_community_desc')}
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
@@ -266,8 +265,8 @@ export function WelcomeFragment({ onOpen }: {
                                 <MessageCircle className="w-6 h-6" />
                             </div>
                             <div>
-                                <div className="font-medium text-gray-900 dark:text-white">QQ 群</div>
-                                <div className="text-sm text-gray-500 dark:text-gray-400">群号：1077940774</div>
+                                <div className="font-medium text-gray-900 dark:text-white">{t('welcome.qq_group')}</div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">{t('welcome.qq_group_id', { id: '1077940774' })}</div>
                             </div>
                         </div>
                         <div className="flex items-center gap-4 p-4 rounded-lg border border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/[0.02]">
@@ -275,8 +274,8 @@ export function WelcomeFragment({ onOpen }: {
                                 <MessageSquare className="w-6 h-6" />
                             </div>
                             <div>
-                                <div className="font-medium text-gray-900 dark:text-white">微信群</div>
-                                <div className="text-sm text-gray-500 dark:text-gray-400">请加微信：zhang-4696，备注“答己”，即可进入微信群</div>
+                                <div className="font-medium text-gray-900 dark:text-white">{t('welcome.wechat_group')}</div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">{t('welcome.wechat_group_desc')}</div>
                             </div>
                         </div>
                     </div>

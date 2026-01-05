@@ -14,24 +14,24 @@ export function useScrollHooks(dependency: any, open: boolean) {
         }
     }, []);
 
-    // 默认会自动向下滚动，当出现向上滚动时停止自动滚动
-    // 如果用户滚动到底部，则恢复自动滚动
+    // Automatically scroll down by default, stop auto-scrolling when scrolling up
+    // If user scrolls to bottom, resume auto-scrolling
     const handleScroll = useCallback(() => {
         if (!scrollAreaRef.current) return;
         const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLDivElement;
         if (viewport) {
             const { scrollTop, scrollHeight, clientHeight } = viewport;
-            // 距离底部小于25px就认为在底部
+            // Considered at bottom if distance to bottom is less than 25px
             const isAtBottom = (scrollTop + clientHeight >= scrollHeight - 25);
 
             if (isAtBottom) {
-                // 用户滚动到底部，恢复自动滚动
+                // User scrolled to bottom, resume auto-scrolling
                 isAutoScrollRef.current = true;
-                console.log('恢复自动滚动');
+                console.log('Resume auto-scrolling');
             } else if (scrollTop < lastScrollTop.current) {
-                // 向上滚动时，停止自动滚动
+                // Stop auto-scrolling when scrolling up
                 isAutoScrollRef.current = false;
-                console.log('停止自动滚动');
+                console.log('Stop auto-scrolling');
             }
             lastScrollTop.current = scrollTop;
         }
@@ -40,7 +40,7 @@ export function useScrollHooks(dependency: any, open: boolean) {
     useEffect(() => {
         if (!open) return;
 
-        // 使用 setTimeout 延迟，确保 Dialog 动画完成后 DOM 已经渲染
+        // Use setTimeout delay to ensure DOM is rendered after Dialog animation completes
         const timer = setTimeout(() => {
             if (!scrollAreaRef.current) {
                 console.warn('scrollAreaRef.current is null');
@@ -52,7 +52,7 @@ export function useScrollHooks(dependency: any, open: boolean) {
                 return;
             }
             viewport.addEventListener('scroll', handleScroll);
-        }, 100); // 延迟 100ms，等待 Dialog 动画完成
+        }, 100); // Delay 100ms, wait for Dialog animation to complete
 
         return () => {
             clearTimeout(timer);
@@ -65,9 +65,9 @@ export function useScrollHooks(dependency: any, open: boolean) {
         };
     }, [open, handleScroll]);
 
-    // 默认自动滚动 - 使用 useLayoutEffect 确保在 DOM 更新后立即执行
+    // Default auto-scroll - use useLayoutEffect to ensure execution immediately after DOM update
     useLayoutEffect(() => {
-        // 使用 requestAnimationFrame 确保滚动在浏览器重绘前执行
+        // Use requestAnimationFrame to ensure scroll executes before browser repaint
         const rafId = requestAnimationFrame(() => {
             scrollToBottom();
         });

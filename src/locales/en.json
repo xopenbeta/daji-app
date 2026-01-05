@@ -48,6 +48,8 @@
     "select_language": "Select Language",
     "select_theme": "Select Theme",
     "select_provider": "Select AI Provider",
+    "language_zh": "Chinese",
+    "provider_qwen": "Alibaba Qwen",
     "enter_api_key": "Enter your API Key",
     "enter_base_url": "API Endpoint URL",
     "enter_model": "Click above to select or enter model name manually",
@@ -96,7 +98,10 @@
     "error": "Error",
     "warn": "Warning",
     "info": "Info",
-    "debug": "Debug"
+    "debug": "Debug",
+    "expand_params": "Expand Params",
+    "collapse_params": "Collapse Params",
+    "drag_to_resize": "Drag here to resize height"
   },
   "welcome": {
     "getting_started": "Getting Started",
@@ -106,6 +111,18 @@
     "step2_desc": "Develop with AI",
     "step3": "Run",
     "step3_desc": "One-Click Start",
+    "star_on_github": "If you like Daji, give us a Star on GitHub",
+    "feedback": "Feedback",
+    "feedback_desc": "Submit Issue or Star to support us",
+    "join_qq": "Join QQ Group",
+    "wechat": "WeChat",
+    "join_wechat": "Join WeChat Group",
+    "join_community": "Join Community",
+    "join_community_desc": "Join our QQ or WeChat group for updates and help.",
+    "qq_group": "QQ Group",
+    "qq_group_id": "Group ID: {{id}}",
+    "wechat_group": "WeChat Group",
+    "wechat_group_desc": "Please add WeChat: zhang-4696, remark \"Daji\" to join the group",
     "placeholder_url_encoder": "Generate URL Encoder/Decoder",
     "placeholder_calculator": "Generate Calculator",
     "placeholder_qrcode": "Generate QR Code Generator",
@@ -114,6 +131,7 @@
   "program": {
     "create_new": "Create New Program",
     "save_program": "Save Program",
+    "drag_to_sort": "Drag to sort",
     "export_success": "Exported successfully",
     "export_failed": "Export failed",
     "import_success": "Imported successfully",
@@ -136,6 +154,8 @@
     "ai_request_failed": "AI request failed",
     "interrupted": "Generation interrupted",
     "fix_error_prompt": "I encountered this error, please help me fix it:\n{{error}}",
-    "generated_desc": "AI generated program"
+    "generated_desc": "AI generated program",
+    "error_detected_fix": "Program execution error detected. Would you like me to try to fix it?",
+    "system_prompt": "You are a professional web frontend development expert.\nYour task is to generate a single-file HTML mini program based on user requirements.\nRequirements:\n1. Code must be contained in a complete HTML file.\n2. Write CSS styles in <style> tags, with a style similar to the following prompt (though you can't use tailwindcss).\n···\n\"Create a React component using Tailwind CSS and shadcn/ui design principles. The aesthetic should be 'Linear-style' or 'Vercel-style' modern developer tool interface.\n\nKey Design Requirements:\n\nTheme: Minimalist, clean, and high-contrast. Support Dark Mode with a deep black background (e.g., #030303) and subtle borders (e.g., border-white/5 or white/10).\nBackground: Implement a subtle grid pattern background with a radial mask to fade it out edges, and add a faint, blurred ambient glow (gradient blob) at the top or behind key elements.\nTypography: Use a sans-serif font (Inter/Geist style). Use small text sizes (text-sm, text-xs) with muted colors (text-gray-500) for secondary information.\nComponents:\nCards: Flat backgrounds with thin, subtle borders.\nButtons: Use 'Ghost' or 'Outline' variants for secondary actions.\nIcons: Use Lucide-react icons, sized small (w-4 h-4).\nInteractivity: Add subtle hover states (e.g., hover:bg-white/5) and smooth transitions (transition-all).\nLayout: Use Flexbox and Grid for a responsive dashboard-like structure.\"\n···\n3. Write JavaScript logic in <script> tags.\n4. Beautiful interface, smooth interaction, default white background, blue theme color, mini program fills the full screen, no border and margin around.\n5. Add console.log/error/warn logs at key logic points in the code, but don't display these logs on the interface, no log panel.\n6. Output code directly, add comments to each line of code.\n7. If you need to modify existing code, output the complete modified code.\n8. Code should be as minimal as possible, styles should be as minimal as possible, functionality should be as minimal as possible, just meet the user's requirements.\n9. The less code generated, the more correct the functionality.\n10. Make sure to wrap the code in ```html ... ``` code blocks.\nExisting code (if any):\n{{generatedCode}}"
   }
 }

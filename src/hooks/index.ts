@@ -12,7 +12,7 @@ export function useInitDaji() {
         const initialize = async () => {
             setIsAppLoading(true);
             try {
-                // 初始化应用设置
+                // Initialize app settings
                 const appSettings = initAppSettings()
                 setIsDajiInited(true)
             } catch (e: any) {

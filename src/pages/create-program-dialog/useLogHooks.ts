@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
 import { addChatMessageAtom } from '@/store/ai';
+import { useTranslation } from 'react-i18next';
 
 export interface LogEntry {
     type: 'log' | 'error' | 'warn' | 'info';
@@ -9,6 +10,7 @@ export interface LogEntry {
 }
 
 export function useLogHooks() {
+    const { t } = useTranslation();
     const [logs, setLogs] = useState<LogEntry[]>([]);
     const [, addChatMessage] = useAtom(addChatMessageAtom);
     
@@ -34,7 +36,7 @@ export function useLogHooks() {
                         
                         addChatMessage({
                             role: 'assistant',
-                            content: '检测到程序运行错误，是否需要我尝试修复？',
+                            content: t('program.error_detected_fix'),
                             errorLog: newLog.content
                         });
                     }

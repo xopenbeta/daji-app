@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-// 处理点击外部关闭搜索框
+// Handle closing search box when clicking outside
 export const useClickOutsideBlur = (props: {
   isSearchExpanded: boolean;
   setIsSearchExpanded: (expanded: boolean) => void;
@@ -8,7 +8,7 @@ export const useClickOutsideBlur = (props: {
   searchRef: React.RefObject<HTMLDivElement>
 }) => {
   const { isSearchExpanded, setIsSearchExpanded, setSearchQuery, searchRef } = props;
-  // 点击外部关闭搜索框
+  // Close search box when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {

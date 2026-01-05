@@ -28,7 +28,7 @@ export default function Daji() {
   return <div className="fixed w-screen h-screen overflow-hidden bg-content2">
   <ResizablePanelGroup direction="horizontal" className="w-screen h-screen">
 
-      {/* 导航栏 */}
+      {/* Navigation Bar */}
       <ResizablePanel
         ref={navPanelRef}
         defaultSize={30}
@@ -40,10 +40,10 @@ export default function Daji() {
         <NavBar onClose={() => setIsNavPanelOpen(false)} />
       </ResizablePanel>
 
-      {/* 拖动线 */}
+      {/* Drag Handle */}
       <ResizableHandle className={resizableHandleClassName} />
 
-      {/* 主体内容 */}
+      {/* Main Content */}
       <ResizablePanel
         defaultSize={70}
         minSize={20}

@@ -5,6 +5,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/
 import { cn, safeStringify } from '@/lib/utils'
 import { useAtom } from 'jotai'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { autoScrollLogAtom, isLogPanelOpenAtom, logEntriesAtom, LogEntry } from '@/store/log'
 import { appSettingsAtom, isAppLoadingAtom } from '@/store/appSettings'
 import { X, Trash2, Copy, ChevronDown, Pause, RefreshCcw, ChevronRight } from 'lucide-react'
@@ -27,6 +28,7 @@ function LevelBadge({ level }: { level: LogEntry['level'] }) {
 }
 
 function LogEntryItem({ entry }: { entry: LogEntry }) {
+  const { t } = useTranslation()
   const [collapsed, setCollapsed] = useState(true)
   const hasMeta = entry.meta && Object.keys(entry.meta).length > 0
 
@@ -40,7 +42,7 @@ function LogEntryItem({ entry }: { entry: LogEntry }) {
           <button
             onClick={() => setCollapsed(!collapsed)}
             className="text-muted-foreground hover:text-foreground transition-colors p-0.5 rounded"
-            title={collapsed ? '展开参数' : '收起参数'}
+            title={collapsed ? t('common.expand_params') : t('common.collapse_params')}
           >
             <ChevronRight className={cn('h-3 w-3 transition-transform', !collapsed && 'rotate-90')} />
           </button>
@@ -134,7 +136,7 @@ export default function LogPanel() {
               dragging ? 'cursor-ns-resize' : 'cursor-ns-resize'
             )}
             onMouseDown={onHeaderMouseDown}
-            title="拖动这里调整高度"
+            title={t('common.drag_to_resize')}
           >
             <div className="flex items-center gap-2">
               <TabsList>
