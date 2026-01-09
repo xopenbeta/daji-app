@@ -188,20 +188,10 @@ export function WelcomeFragment({ onOpen }: {
                         </div>
                     </div>
 
-                    {/* Getting Started */}
-                    <div className="space-y-3">
-                        <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider px-1">{t('welcome.getting_started')}</h2>
-                        <div className="grid grid-cols-3 gap-3">
-                            <Step number="1" title={t('welcome.step1')} desc={t('welcome.step1_desc')} />
-                            <Step number="2" title={t('welcome.step2')} desc={t('welcome.step2_desc')} />
-                            <Step number="3" title={t('welcome.step3')} desc={t('welcome.step3_desc')} />
-                        </div>
-                    </div>
-
                     {/* Usage Scenarios */}
-                    <section className="space-y-6" aria-labelledby="scenarios-title">
+                    <section className="space-y-3" aria-labelledby="scenarios-title">
                         <h2 id="scenarios-title" className="text-sm font-semibold text-gray-500 uppercase tracking-wider px-1">{t('scenarios.title')}</h2>
-                        <div className="grid grid-cols-1 gap-5">
+                        <div className="grid grid-cols-1 gap-3">
                             {[
                                 {
                                     icon: <Zap className="w-6 h-6" />,
@@ -228,23 +218,33 @@ export function WelcomeFragment({ onOpen }: {
                                     borderColor: "group-hover:border-emerald-300 dark:group-hover:border-emerald-500/30"
                                 }
                             ].map((scenario, index) => (
-                                <div key={index} className={`relative flex flex-row items-center gap-4 p-4 rounded-2xl border border-gray-200 dark:border-white/5 bg-gradient-to-br ${scenario.gradient} backdrop-blur-sm ${scenario.borderColor} transition-all duration-300 group h-full overflow-hidden`}>
+                                <div key={index} className={`relative flex flex-row items-center gap-3 p-3 rounded-xl border border-gray-200 dark:border-white/5 bg-gradient-to-br ${scenario.gradient} backdrop-blur-sm ${scenario.borderColor} transition-all duration-300 group h-full overflow-hidden`}>
                                     {/* Background decoration */}
                                     <div className={`absolute top-0 right-0 w-32 h-32 ${scenario.iconBg} opacity-5 blur-3xl group-hover:opacity-10 transition-opacity duration-300`}></div>
                                     
-                                    <div className={`relative p-2.5 rounded-xl ${scenario.iconBg} shadow-lg transition-transform duration-300 shrink-0`}>
+                                    <div className={`relative p-2 rounded-lg ${scenario.iconBg} shadow-lg transition-transform duration-300 shrink-0`}>
                                         <div className="text-white">
                                             {scenario.icon}
                                         </div>
                                     </div>
                                     <div className="relative flex-1">
-                                        <h3 className="text-base font-bold text-gray-900 dark:text-white mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 dark:group-hover:from-blue-400 dark:group-hover:to-purple-400 transition-all duration-300">{scenario.title}</h3>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{scenario.description}</p>
+                                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-0.5 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 dark:group-hover:from-blue-400 dark:group-hover:to-purple-400 transition-all duration-300">{scenario.title}</h3>
+                                        <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{scenario.description}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </section>
+
+                    {/* Getting Started */}
+                    <div className="space-y-3">
+                        <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider px-1">{t('welcome.getting_started')}</h2>
+                        <div className="grid grid-cols-3 gap-3">
+                            <Step number="1" title={t('welcome.step1')} desc={t('welcome.step1_desc')} />
+                            <Step number="2" title={t('welcome.step2')} desc={t('welcome.step2_desc')} />
+                            <Step number="3" title={t('welcome.step3')} desc={t('welcome.step3_desc')} />
+                        </div>
+                    </div>
 
                     {/* Feedback & Suggestions */}
                     <div className="space-y-3 mb-6">

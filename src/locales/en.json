@@ -128,6 +128,21 @@
     "placeholder_qrcode": "Generate QR Code Generator",
     "placeholder_more": "Generate more..."
   },
+  "scenarios": {
+    "title": "Use Cases",
+    "rapid": {
+      "title": "Rapid Tool Customization",
+      "desc": "Need a timestamp batch converter but can't find an online tool"
+    },
+    "switch": {
+      "title": "Local File Processing",
+      "desc": "Need to batch rename local files, but manual editing is time-consuming"
+    },
+    "team": {
+      "title": "Ad-Free Entertainment",
+      "desc": "Want to play Tetris but online gaming sites are full of ads"
+    }
+  },
   "program": {
     "create_new": "Create New Program",
     "save_program": "Save Program",

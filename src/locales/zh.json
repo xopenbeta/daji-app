@@ -128,6 +128,21 @@
     "placeholder_qrcode": "二维码生成器",
     "placeholder_more": "生成更多..."
   },
+  "scenarios": {
+    "title": "使用场景",
+    "rapid": {
+      "title": "快速定制工具",
+      "desc": "想要一个时间戳批量转换工具，网上搜不到在线工具"
+    },
+    "switch": {
+      "title": "本地文件处理",
+      "desc": "需要对本地文件批量重命名，手动改费时费力"
+    },
+    "team": {
+      "title": "无广告娱乐",
+      "desc": "想玩俄罗斯方块小游戏，但在线小游戏网站都是广告"
+    }
+  },
   "program": {
     "create_new": "创建新程序",
     "save_program": "保存程序",
