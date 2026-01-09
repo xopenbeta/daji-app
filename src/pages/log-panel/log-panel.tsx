@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next'
 import { autoScrollLogAtom, isLogPanelOpenAtom, logEntriesAtom, LogEntry } from '@/store/log'
 import { appSettingsAtom, isAppLoadingAtom } from '@/store/appSettings'
 import { X, Trash2, Copy, ChevronDown, Pause, RefreshCcw, ChevronRight } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
 
 function formatTime(ts: number) {
   const d = new Date(ts)

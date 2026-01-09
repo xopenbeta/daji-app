@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAtom } from "jotai";
 import { useState, useEffect, useRef } from "react";
 import { createProgramDialogStateAtom } from "@/store";
-import { Github, Server, Code, Database, Settings, PanelLeft, Bot, Zap, Globe, Box, Layers, Terminal, Command, Cpu, Plus, FolderOpen, Book, Clock, ArrowRight, Search, GripVertical, Play, Square, Hexagon, Info, MemoryStick, HardDrive, Wifi, Upload, MessageCircle, MessageSquare } from "lucide-react";
+import { Github, Server, Code, Database, Settings, PanelLeft, Bot, Zap, Globe, Box, Layers, Terminal, Command, Cpu, Plus, FolderOpen, Book, Clock, ArrowRight, Search, GripVertical, Play, Square, Hexagon, Info, MemoryStick, HardDrive, Wifi, Upload, MessageCircle, MessageSquare, Users } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -197,6 +197,54 @@ export function WelcomeFragment({ onOpen }: {
                             <Step number="3" title={t('welcome.step3')} desc={t('welcome.step3_desc')} />
                         </div>
                     </div>
+
+                    {/* Usage Scenarios */}
+                    <section className="space-y-6" aria-labelledby="scenarios-title">
+                        <h2 id="scenarios-title" className="text-sm font-semibold text-gray-500 uppercase tracking-wider px-1">{t('scenarios.title')}</h2>
+                        <div className="grid grid-cols-1 gap-5">
+                            {[
+                                {
+                                    icon: <Zap className="w-6 h-6" />,
+                                    title: t('scenarios.rapid.title'),
+                                    description: t('scenarios.rapid.desc'),
+                                    gradient: "from-orange-500/10 to-red-500/10",
+                                    iconBg: "bg-gradient-to-br from-orange-500 to-red-500",
+                                    borderColor: "group-hover:border-orange-300 dark:group-hover:border-orange-500/30"
+                                },
+                                {
+                                    icon: <Layers className="w-6 h-6" />,
+                                    title: t('scenarios.switch.title'),
+                                    description: t('scenarios.switch.desc'),
+                                    gradient: "from-blue-500/10 to-cyan-500/10",
+                                    iconBg: "bg-gradient-to-br from-blue-500 to-cyan-500",
+                                    borderColor: "group-hover:border-blue-300 dark:group-hover:border-blue-500/30"
+                                },
+                                {
+                                    icon: <Users className="w-6 h-6" />,
+                                    title: t('scenarios.team.title'),
+                                    description: t('scenarios.team.desc'),
+                                    gradient: "from-emerald-500/10 to-teal-500/10",
+                                    iconBg: "bg-gradient-to-br from-emerald-500 to-teal-500",
+                                    borderColor: "group-hover:border-emerald-300 dark:group-hover:border-emerald-500/30"
+                                }
+                            ].map((scenario, index) => (
+                                <div key={index} className={`relative flex flex-row items-center gap-4 p-4 rounded-2xl border border-gray-200 dark:border-white/5 bg-gradient-to-br ${scenario.gradient} backdrop-blur-sm ${scenario.borderColor} transition-all duration-300 group h-full overflow-hidden`}>
+                                    {/* Background decoration */}
+                                    <div className={`absolute top-0 right-0 w-32 h-32 ${scenario.iconBg} opacity-5 blur-3xl group-hover:opacity-10 transition-opacity duration-300`}></div>
+                                    
+                                    <div className={`relative p-2.5 rounded-xl ${scenario.iconBg} shadow-lg transition-transform duration-300 shrink-0`}>
+                                        <div className="text-white">
+                                            {scenario.icon}
+                                        </div>
+                                    </div>
+                                    <div className="relative flex-1">
+                                        <h3 className="text-base font-bold text-gray-900 dark:text-white mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 dark:group-hover:from-blue-400 dark:group-hover:to-purple-400 transition-all duration-300">{scenario.title}</h3>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{scenario.description}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
 
                     {/* Feedback & Suggestions */}
                     <div className="space-y-3 mb-6">
